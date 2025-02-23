@@ -1,0 +1,24 @@
+!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/test/main/DFD.puml
+!$level="DFD Level 1"
+
+!unquoted procedure Process($label)
+subgraph cluster_level1{
+graph [clusterrank=local rankdir=TB labeljust=c labelloc=t color=grey \
+label="$label"]
+!endprocedure
+
+!procedure DataFlows()
+}
+!endprocedure
+
+!unquoted procedure External($alias, $label)
+    $alias [label="$label" shape=box fillcolor=lightsteelblue1 style=filled fontcolor="#000000"  fontsize=12 color=grey width=1 height=2];
+!endprocedure
+
+!unquoted procedure SubProcess($alias, $id, $label)
+   $alias [label="$id | $label\n\n\n" shape=Mrecord fillcolor=lightsteelblue1 style=filled fontcolor="#000000" fontsize=12 color=grey width=2];
+!endprocedure
+
+!procedure DataStore($alias, $label)
+    $alias [label="{<f0>D |<f1> $label}" shape=record fillcolor=lightsteelblue1 style=filled fontcolor="#000000" fontsize=12 color=grey width=2];
+!endprocedure
