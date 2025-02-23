@@ -1,0 +1,10 @@
+!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/test/main/DFD.puml
+!$level="Context Diagram (DFD Level 0)"
+
+!unquoted procedure External($alias, $label)
+    $alias [label="$label" shape=box fillcolor=lightsteelblue1 style=filled fontcolor="#000000"  fontsize=12 color=grey width=1 height=2];
+!endprocedure
+
+!unquoted procedure Process($alias, $label)
+   $alias [label="0 | $label\n\n" shape=Mrecord fillcolor=lightsteelblue1 style=filled fontcolor="#000000" fontsize=12 color=grey width=2];
+!endprocedure
