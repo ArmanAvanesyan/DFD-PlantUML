@@ -125,8 +125,6 @@ endDfd()
 - `BiFlow(from, to, ?label)` (bidirectional data flow)
 - `Flow_Back(from, to, ?label)` (back direction data flow)
 
-In following sample a person uses different systems, and a group of persons which have bidirectional relationships
-
 ---
 
 ## License
