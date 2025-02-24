@@ -1,0 +1,54 @@
+name: Enhancement Request
+description: "Suggest an improvement or refinement to an existing feature."
+title: "[Enhancement]: "
+labels:
+  - enhancement
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve the project!
+        Please provide a clear and concise description of the enhancement you're proposing.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: "Summary"
+      description: "What improvement or change would you like to see?"
+      placeholder: |
+        Example:
+        - A brief overview of the enhancement.
+        - Why is this change important?
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_behavior
+    attributes:
+      label: "Current Behavior"
+      description: "Describe the current behavior or limitation that you believe could be improved."
+      placeholder: "Describe what currently happens..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_solution
+    attributes:
+      label: "Proposed Improvement"
+      description: "How do you imagine the enhancement working? Provide details or examples if possible."
+      placeholder: |
+        Example:
+        - How the workflow/UI/API could be changed.
+        - Suggestions on the implementation approach.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: "Additional Context"
+      description: "Add any extra context, screenshots, or references that may help us understand your proposal."
+      placeholder: "Any additional details..."
+    validations:
+      required: false
