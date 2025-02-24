@@ -1,0 +1,34 @@
+"docs":
+  changed-files:
+    - "**/*.md"
+    - "docs/**/*"
+
+"workflows":
+  changed-files:
+    - ".github/workflows/**/*"
+
+"issue-templates":
+  changed-files:
+    - ".github/ISSUE_TEMPLATE/**/*"
+
+"contributing":
+  changed-files:
+    - "CONTRIBUTING.md"
+
+"release":
+  changed-files:
+    - "CHANGELOG.md"
+
+"source":
+  changed-files:
+    - "*.puml"
+    - "*.iuml"
+    - "*.plantuml"
+
+"license":
+  changed-files:
+    - "**/LICENSE*"
+
+"config":
+  changed-files:
+    - ".github/**/*.yml"
