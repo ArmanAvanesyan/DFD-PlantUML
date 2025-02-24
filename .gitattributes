@@ -1,0 +1,16 @@
+# Treat all PlantUML files as PlantUML language
+*.puml linguist-language=PlantUML
+*.iuml linguist-language=PlantUML
+*.plantuml linguist-language=PlantUML
+
+# Ensure PlantUML files are counted in language stats
+*.puml linguist-detectable=true
+*.iuml linguist-detectable=true
+*.plantuml linguist-detectable=true
+
+# Exclude Markdown files from language statistics
+*.md linguist-detectable=false
+
+# Exclude YAML configuration files (GitHub workflows and templates) from language statistics
+*.yml linguist-detectable=false
+*.yaml linguist-detectable=false
