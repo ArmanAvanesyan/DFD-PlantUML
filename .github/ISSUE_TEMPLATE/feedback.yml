@@ -1,0 +1,44 @@
+name: Feedback
+description: "Provide feedback, comments, or suggestions on existing features or project direction."
+title: "[Feedback]: "
+labels:
+  - feedback
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for sharing your feedback or suggestions!  
+        Let us know how we can improve or what you love about the project.
+
+  - type: textarea
+    id: feedback_summary
+    attributes:
+      label: "Summary"
+      description: "What is your feedback about? Please be as specific as possible."
+      placeholder: |
+        Example:
+        - Comments about usability, performance, or design
+        - Your experience so far
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: "Impact or Motivation"
+      description: "How does this feedback affect your usage or others' usage? Why does it matter?"
+      placeholder: |
+        Example:
+        - Why is this important?
+        - What workflows does it help or hinder?
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_info
+    attributes:
+      label: "Additional Information"
+      description: "Any extra details, screenshots, or links to related issues."
+    validations:
+      required: false
