@@ -1,0 +1,33 @@
+name: Question
+description: "Ask a question about usage, best practices, or general inquiries."
+title: "[Question]: "
+labels:
+  - question
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        If you have questions about how to use this project or about best practices,  
+        please fill out the details below. Thank you!
+
+  - type: textarea
+    id: question_details
+    attributes:
+      label: "Your Question"
+      description: "What do you need help understanding? Provide context or code examples if possible."
+      placeholder: |
+        Example:
+        - Steps you're taking
+        - Specific code blocks or commands you're using
+        - Error messages or logs
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment_info
+    attributes:
+      label: "Environment Info (Optional)"
+      description: "Add any environment details that might be relevant (e.g., OS, version, etc.)."
+    validations:
+      required: false

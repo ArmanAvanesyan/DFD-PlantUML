@@ -1,0 +1,67 @@
+name: Bug report
+description: "Report a bug or unexpected behavior."
+title: "[Bug]: "
+labels:
+  - bug
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug!  
+        Please fill out the details below so we can troubleshoot effectively.
+
+  - type: textarea
+    id: describe_bug
+    attributes:
+      label: "Describe the Bug"
+      description: "A clear and concise description of what the bug is."
+      placeholder: |
+        Example:
+        - The feature crashes with an error
+        - UI elements do not render correctly
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: "Steps to Reproduce"
+      description: "List the steps needed to reproduce the bug."
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Observe '...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: "Expected Behavior"
+      description: "What did you expect to happen instead?"
+      placeholder: "The correct or intended behavior..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: "Environment"
+      description: "Add any environment details (OS, browser, version, etc.)."
+      placeholder: |
+        Example:
+        - OS: Windows 10
+        - Browser: Chrome vXX
+        - or relevant environment for your project
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: "Additional Context"
+      description: "Add any other context, logs, or screenshots about the bug here."
+      placeholder: "Log output, screenshots, possible root causes, etc."
+    validations:
+      required: false
