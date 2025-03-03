@@ -1,13 +1,83 @@
-!function getTitle($title)
-    !return $title
-!endfunction
+' Default Settings
+' ##################################
 
-!procedure Title($title, $level)
+' Default title settings
+!$DEFAULT_TITLE_FONTSIZE ?= 16
+!$DEFAULT_TITLE_FONTCOLOR ?= "black"
+!$DEFAULT_SUBTITLE_FONTSIZE ?= 10
+!DEFAULT_SUBTITLE_FONTCOLOR ?= "black"
+
+' Default component settings
+!$DEFAULT_FILLCOLOR ?= "lightsteelblue1"
+!$DEFAULT_STYLE ?= "filled"
+!$DEFAULT_FONTCOLOR ?= "#000000"
+!$DEFAULT_FONTSIZE ?= 12
+!$DEFAULT_BORDERCOLOR ?= "grey"
+!$DEFAULT_WIDTH ?= 2
+!$DEFAULT_HEIGHT ?= 1
+
+' Default External entity settings
+!$DEFAULT_EXTERNAL_STYLE = "filled"
+!$DEFAULT_EXTERNAL_FILLCOLOR = "lightgray"
+!$DEFAULT_EXTERNAL_SHAPE = "rectangle"
+!$DEFAULT_EXTERNAL_WIDTH = 1
+!$DEFAULT_EXTERNAL_HEIGHT = 2
+
+' Default Process settings
+!$DEFAULT_PROCESS_STYLE = "filled"
+!$DEFAULT_PROCESS_FILLCOLOR = "lightsteelblue1"
+!$DEFAULT_PROCESS_SHAPE = "circle"
+!$DEFAULT_PROCESS_WIDTH = 2
+!$DEFAULT_PROCESS_HEIGHT = 1
+
+'Default DataStore settings
+!$DEFAULT_DATASTORE_STYLE = "filled"
+!$DEFAULT_DATASTORE_FILLCOLOR = "lightsteelblue1"
+!$DEFAULT_DATASTORE_SHAPE = "circle"
+!$DEFAULT_DATASTORE_WIDTH = 1
+!$DEFAULT_DATASTORE_HEIGHT = 0
+
+' Default flow settings
+!$DEFAULT_ARROW_FONTSIZE ?= 13
+!$DEFAULT_ARROW_FONTCOLOR ?= "black"
+!$DEFAULT_PENWIDTH ?= 1
+!$DEFAULT_ARROW_STYLE ?= "solid"
+!$DEFAULT_ARROW_COLOR ?= "black"
+
+' Default layout settings
+!$DEFAULT_RANKDIR = "LR"
+!$DEFAULT_RANKSEP = 1.5
+
+' Core Procedures
+' ##################################
+
+' Title procedure and customization
+!unquoted procedure Title($title)
+!if ($title == "")
+    graph [rankdir=LR ranksep=1.5 labeljust=c labelloc=t label=""]
+!else
     graph [rankdir=LR ranksep=1.5 labeljust=c labelloc=t \
     label=<<TABLE BORDER="0" CELLBORDER="0"> \
-    <TR><TD><FONT POINT-SIZE="16">$title</FONT></TD></TR> \
-    <TR><TD><FONT POINT-SIZE="10">$level</FONT></TD></TR> \
-    </TABLE>> ]
+    <TR><TD><FONT POINT-SIZE="$TITLE_FONTSIZE" COLOR="$TITLE_FONTCOLOR">$title</FONT></TD></TR> \
+    <TR><TD><FONT POINT-SIZE="$SUBTITLE_FONTSIZE" COLOR="$SUBTITLE_FONTCOLOR">$LEVEL</FONT></TD></TR> \
+    </TABLE>>]
+!endif
+!endprocedure
+
+!procedure SetTitleFontSize($size)
+!$TITLE_FONTSIZE = $size
+!endprocedure
+
+!procedure SetTitleFontColor($color)
+!$TITLE_FONTCOLOR = $color
+!endprocedure
+
+!procedure SetSubtitleFontSize($size)
+!$SUBTITLE_FONTSIZE = $size
+!endprocedure
+
+!procedure SetTitleFontColor($color)
+!$TITLE_FONTCOLOR = $color
 !endprocedure
 
 ' DFD start/end procedures
