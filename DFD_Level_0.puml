@@ -1,10 +1,69 @@
-!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/test/main/DFD.puml
-!$level="Context Diagram (DFD Level 0)"
+' Include base components and fl
+!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/DFD-PlantUML/main/DFD.puml
 
-!unquoted procedure External($alias, $label)
-    $alias [label="$label" shape=box fillcolor=lightsteelblue1 style=filled fontcolor="#000000"  fontsize=12 color=grey width=1 height=2];
+' Default styles and settings for Contex
+!$LEVEL="Context Diagram (DFD Level 0)"
+
+!$TITLE_FONTSIZE = $DEFAULT_TITLE_FONTSIZE
+!$TITLE_FONTCOLOR = $DEFAULT_TITLE_FONTCOLOR
+!$SUBTITLE_FONTSIZE = $DEFAULT_SUBTITLE_FONTSIZE
+!$SUBTITLE_FONTCOLOR = $DEFAULT_SUBTITLE_FONTCOLOR
+
+!$RANKDIR = $DEFAULT_RANKDIR
+!$RANKSEP = $DEFAULT_RANKSEP
+
+!$EXTERNAL_FILLCOLOR ?= $DEFAULT_FILLCOLOR
+!$EXTERNAL_STYLE ?= $DEFAULT_STYLE
+!$EXTERNAL_FONTCOLOR ?= $DEFAULT_FONTCOLOR
+!$EXTERNAL_FONTSIZE ?= $DEFAULT_FONTSIZE
+!$EXTERNAL_SHAPE ?= "box"
+!$EXTERNAL_FILLCOLOR ?= $DEFAULT_FILLCOLOR
+!$EXTERNAL_WIDTH ?= $DEFAULT_WIDTH
+!$EXTERNAL_HEIGHT ?= 2
+
+!$PROCESS_FILLCOLOR ?= $DEFAULT_FILLCOLOR
+!$PROCESS_STYLE ?= $DEFAULT_STYLE
+!$PROCESS_FONTCOLOR ?= $DEFAULT_FONTCOLOR
+!$PROCESS_FONTSIZE ?= $DEFAULT_FONTSIZE
+!$PROCESS_SHAPE ?= "Mrecord"
+!$PROCESS_FILLCOLOR ?= $DEFAULT_FILLCOLOR
+!$PROCESS_WIDTH ?= $DEFAULT_WIDTH
+!$PROCESS_HEIGHT ?= 1
+
+' External Entity
+!unquoted procedure External($alias, $label, $id="")
+    Component($alias, $label, $id, $EXTERNAL_SHAPE, $EXTERNAL_FILLCOLOR, $EXTERNAL_WIDTH, $EXTERNAL_HEIGHT, "external")
 !endprocedure
 
-!unquoted procedure Process($alias, $label)
-   $alias [label="0 | $label\n\n" shape=Mrecord fillcolor=lightsteelblue1 style=filled fontcolor="#000000" fontsize=12 color=grey width=2];
+' External Entity customization
+!procedure SetExternalStyle($style="filled")
+!$EXTERNAL_STYLE = $style
+!endprocedure
+
+!procedure SetExternalFillColor($color="lightgray")
+!$EXTERNAL_FILLCOLOR = $color
+!endprocedure
+
+!procedure SetExternalSize($width=2, $height=1)
+!$EXTERNAL_WIDTH = $width
+!$EXTERNAL_HEIGHT = $height
+!endprocedure
+
+' Process
+!unquoted procedure Process($alias, $label, $id="")
+    Component($alias, $label, $id, $PROCESS_SHAPE, $PROCESS_FILLCOLOR, $PROCESS_WIDTH, $PROCESS_HEIGHT, "process")
+!endprocedure
+
+' Process customization
+!procedure SetProcessStyle($style="filled")
+!$PROCESS_STYLE = $style
+!endprocedure
+
+!procedure SetProcessFillColor($color="lightsteelblue1")
+!$PROCESS_FILLCOLOR = $color
+!endprocedure
+
+!procedure SetProcessSize($width=2, $height=1)
+!$PROCESS_WIDTH = $width
+!$PROCESS_HEIGHT = $height
 !endprocedure

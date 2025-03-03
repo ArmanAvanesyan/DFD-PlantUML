@@ -1,70 +1,13 @@
-' Default Settings
-' ##################################
+!function getTitle($title)
+    !return $title
+!endfunction
 
-' Default title settings
-!$DEFAULT_TITLE_FONTSIZE ?= 16
-!$DEFAULT_TITLE_FONTCOLOR ?= "black"
-!$DEFAULT_SUBTITLE_FONTSIZE ?= 10
-!DEFAULT_SUBTITLE_FONTCOLOR ?= "black"
-
-' Default component settings
-!$DEFAULT_STYLE ?= "filled"
-!$DEFAULT_FILLCOLOR ?= "lightsteelblue1"
-!$DEFAULT_FONTCOLOR ?= "#000000"
-!$DEFAULT_FONTSIZE ?= 12
-!$DEFAULT_BORDERCOLOR ?= "grey"
-!$DEFAULT_WIDTH ?= 2
-!$DEFAULT_HEIGHT ?= 1
-
-' Default flow settings
-!$DEFAULT_ARROW_STYLE = "solid"
-!$DEFAULT_ARROW_COLOR = "black"
-!$DEFAULT_ARROW_FONTCOLOR = "black"
-!$DEFAULT_ARROW_FONTSIZE = 13
-!$DEFAULT_PENWIDTH = 1
-
-' Default layout settings
-!$DEFAULT_RANKDIR = "LR"
-!$DEFAULT_RANKSEP = 1.5
-
-' Core Procedures
-' ##################################
-
-' Title procedure and customization
-!unquoted procedure Title($title)
-!if ($title == "")
-    graph [rankdir=$RANKDIR ranksep=$RANKSEP label=""]
-!else
-    graph [rankdir=$RANKDIR ranksep=$RANKSEP labeljust=c labelloc=t \
+!procedure Title($title, $level)
+    graph [rankdir=LR ranksep=1.5 labeljust=c labelloc=t \
     label=<<TABLE BORDER="0" CELLBORDER="0"> \
-    <TR><TD><FONT POINT-SIZE="$TITLE_FONTSIZE" COLOR="$TITLE_FONTCOLOR">$title</FONT></TD></TR> \
-    <TR><TD><FONT POINT-SIZE="$SUBTITLE_FONTSIZE" COLOR="$SUBTITLE_FONTCOLOR">$LEVEL</FONT></TD></TR> \
-    </TABLE>>]
-!endif
-!endprocedure
-
-!procedure SetRankDir($dir)
-!$RANK_DIR = $dir
-!endprocedure
-
-!procedure SetRankSep($sep)
-!RANKSEP = $sep
-!endprocedure
-
-!procedure SetTitleFontSize($size)
-!$TITLE_FONTSIZE = $size
-!endprocedure
-
-!unquoted procedure SetTitleFontColor($color)
-!$TITLE_FONTCOLOR = $color
-!endprocedure
-
-!procedure SetSubtitleFontSize($size)
-!$SUBTITLE_FONTSIZE = $size
-!endprocedure
-
-!procedure SetSubtitleFontColor($color)
-!$SUBTITLE_FONTCOLOR = $color
+    <TR><TD><FONT POINT-SIZE="16">$title</FONT></TD></TR> \
+    <TR><TD><FONT POINT-SIZE="10">$level</FONT></TD></TR> \
+    </TABLE>> ]
 !endprocedure
 
 ' DFD start/end procedures
