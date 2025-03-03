@@ -5,7 +5,7 @@
 !$DEFAULT_TITLE_FONTSIZE ?= 16
 !$DEFAULT_TITLE_FONTCOLOR ?= "black"
 !$DEFAULT_SUBTITLE_FONTSIZE ?= 10
-!DEFAULT_SUBTITLE_FONTCOLOR ?= "black"
+!$DEFAULT_SUBTITLE_FONTCOLOR ?= "black"
 
 ' Default component settings
 !$DEFAULT_FILLCOLOR ?= "lightsteelblue1"
@@ -54,14 +54,22 @@
 ' Title procedure and customization
 !unquoted procedure Title($title)
 !if ($title == "")
-    graph [rankdir=LR ranksep=1.5 labeljust=c labelloc=t label=""]
+    graph [rankdir=$RANKDIR ranksep=$RANKSEP label=""]
 !else
-    graph [rankdir=LR ranksep=1.5 labeljust=c labelloc=t \
+    graph [rankdir=$RANKDIR ranksep=$RANKSEP labeljust=c labelloc=t \
     label=<<TABLE BORDER="0" CELLBORDER="0"> \
     <TR><TD><FONT POINT-SIZE="$TITLE_FONTSIZE" COLOR="$TITLE_FONTCOLOR">$title</FONT></TD></TR> \
     <TR><TD><FONT POINT-SIZE="$SUBTITLE_FONTSIZE" COLOR="$SUBTITLE_FONTCOLOR">$LEVEL</FONT></TD></TR> \
     </TABLE>>]
 !endif
+!endprocedure
+
+!procedure SetRankDir($rankdir)
+!$RANKDIR = $rankdir
+!endprocedure
+
+!procedure SetRankSep($ranksep)
+!$RANKSEP = $ranksep
 !endprocedure
 
 !procedure SetTitleFontSize($size)
