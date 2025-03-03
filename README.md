@@ -1,3 +1,19 @@
+[![release][Release Badge]][Release Page]
+[![license MIT][License Badge]][License Page]
+&nbsp; &nbsp; &nbsp;
+[![commits since][Commits Since Badge]][Commit Page]
+[![last commit][Last Commit Badge]][Commit Page]
+
+
+[Release Badge]: https://img.shields.io/github/v/release/ArmanAvanesyan/DFD-PlantUML?display_name=tagdisplay_name=tag 
+[Release Page]: https://github.com/ArmanAvanesyan/DFD-PlantUML/releases/latest 
+[License Badge]: https://img.shields.io/github/license/ArmanAvanesyan/DFD-PlantUML
+[License Page]: https://github.com/ArmanAvanesyan/DFD-PlantUML/blob/main/LICENSE 
+
+[Commits Since Badge]: https://img.shields.io/github/commits-since/ArmanAvanesyan/DFD-PlantUML/latest?label=new%20unreleased%20changes
+[Last Commit Badge]: https://img.shields.io/github/last-commit/ArmanAvanesyan/DFD-PlantUML?color=yellow
+[Commit Page]: https://github.com/ArmanAvanesyan/DFD-PlantUML/commits
+
 # DFD-PlantUML
 
 ![DFD Level 1 ](https://www.plantuml.com/plantuml/png/RP7HJiCW58Rl-nILAvOiHTexhpRJBJ7HQB87M5WvkaQW10wRUti1E-DikU6Sy_tdpnzOUHGEWrR5NMyw5IG4fyeZelKFZ3bnhZvwF8P3yE2wmI0OhBf1ixNJmgnFme2_2CCGF38jUiFQRRj_FgazhsnopVRjkwIxNbi5YsBpXU2CK1JuiYJNRcEmnmidVtazuVKDRoQyYVpD3HruJybBJ5EENPoNyUp2uOgzvKl2gtiIJSPPoUTaAKLzgwldT2bDSwjhHbqhKEnmS40bZ_YtZJZLMpMSFLqKwSwlucsIFHaRCE-IaUMvJEmru3-uVnJTvqzSERyD4IK-xvnXCsjDCu0f12FJpowALQo2Ljy0 "DFD Level 1 diagram Simple")
