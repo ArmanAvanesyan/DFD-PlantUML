@@ -1,42 +1,171 @@
-!function getTitle($title)
-    !return $title
-!endfunction
+' Default Settings
+' ##################################
 
-!procedure Title($title, $level)
+' Default title settings
+!$DEFAULT_TITLE_FONTSIZE ?= 16
+!$DEFAULT_TITLE_FONTCOLOR ?= "black"
+!$DEFAULT_SUBTITLE_FONTSIZE ?= 10
+!DEFAULT_SUBTITLE_FONTCOLOR ?= "black"
+
+' Default component settings
+!$DEFAULT_STYLE ?= "filled"
+!$DEFAULT_FILLCOLOR ?= "lightsteelblue1"
+!$DEFAULT_FONTCOLOR ?= "#000000"
+!$DEFAULT_FONTSIZE ?= 12
+!$DEFAULT_BORDERCOLOR ?= "grey"
+!$DEFAULT_WIDTH ?= 2
+!$DEFAULT_HEIGHT ?= 1
+
+' Default flow settings
+!$DEFAULT_ARROW_STYLE = "solid"
+!$DEFAULT_ARROW_COLOR = "black"
+!$DEFAULT_ARROW_FONTCOLOR = "black"
+!$DEFAULT_ARROW_FONTSIZE = 13
+!$DEFAULT_PENWIDTH = 1
+
+' Default layout settings
+!$DEFAULT_RANKDIR = "LR"
+!$DEFAULT_RANKSEP = 1.5
+!$DEFAULT_NODESEP = 0.5
+
+' Core Procedures
+' ##################################
+
+' Title procedure and customization
+!unquoted procedure Title($title)
+!if ($title == "")
+    graph [rankdir=LR ranksep=1.5 labeljust=c labelloc=t label=""]
+!else
     graph [rankdir=LR ranksep=1.5 labeljust=c labelloc=t \
     label=<<TABLE BORDER="0" CELLBORDER="0"> \
-    <TR><TD><FONT POINT-SIZE="16">$title</FONT></TD></TR> \
-    <TR><TD><FONT POINT-SIZE="10">$level</FONT></TD></TR> \
-    </TABLE>> ]
+    <TR><TD><FONT POINT-SIZE="$TITLE_FONTSIZE" COLOR="$TITLE_FONTCOLOR">$title</FONT></TD></TR> \
+    <TR><TD><FONT POINT-SIZE="$SUBTITLE_FONTSIZE" COLOR="$SUBTITLE_FONTCOLOR">$LEVEL</FONT></TD></TR> \
+    </TABLE>>]
+!endif
 !endprocedure
 
-!procedure startDfd($label)
+!procedure SetTitleFontSize($size)
+!$TITLE_FONTSIZE = $size
+!endprocedure
+
+!unquoted procedure SetTitleFontColor($color)
+!$TITLE_FONTCOLOR = $color
+!endprocedure
+
+!procedure SetSubtitleFontSize($size)
+!$SUBTITLE_FONTSIZE = $size
+!endprocedure
+
+!procedure SetSubtitleFontColor($color)
+!$SUBTITLE_FONTCOLOR = $color
+!endprocedure
+
+' DFD start/end procedures
+!unquoted procedure startDfd($label="")
 digraph dfd2 {
-Title($label, $level)
-node[shape=record];
+Title($label)
+node[shape=record]
 !endprocedure
 
 !procedure endDfd()
 }
 !endprocedure
 
+
+' Base component creation procedures
+!unquoted procedure Component($alias, $label, $id="", $shape, $fillcolor, $width, $height, $elementType)
+    !$formattedLabel = getLabel($label, $id, $elementType)
+    $alias [label="$formattedLabel" shape=$shape fillcolor=$fillcolor style=$DEFAULT_STYLE fontcolor="$DEFAULT_FONTCOLOR" fontsize=$DEFAULT_FONTSIZE color=$DEFAULT_BORDERCOLOR width=$width height=$height];
+!endprocedure
+
+' Flow creation procedures
 !unquoted procedure Flow_($from, $to, $label="", $direction="")
   !if ($label != "")
-    $from -> $to [label="$label" dir=$direction]
+    $from -> $to [label="$label" dir=$direction tyle=$DEFAULT_ARROW_STYLE color=$DEFAULT_ARROW_COLOR penwidth=$DEFAULT_PENWIDTH fontcolor=$DEFAULT_ARROW_FONTCOLOR fontsize=$DEFAULT_ARROW_FONTSIZE]
   !else
-    $from -> $to [dir=$direction]
+    $from -> $to [dir=$direction style=$DEFAULT_ARROW_STYLE color=$DEFAULT_ARROW_COLOR penwidth=$DEFAULT_PENWIDTH]
   !endif
 !endprocedure
 
+' Flow Procedures
+' ##################################
+
+' Standard flow (forward direction)
 !unquoted procedure Flow($from, $to, $label="")
 Flow_($from, $to, $label, forward)
 !endprocedure
 
+' Bidirectional flow
 !unquoted procedure BiFlow($from, $to, $label="")
 Flow_($from, $to, $label, both)
 !endprocedure
 
+' Backward flow
 !unquoted procedure Flow_Back($from, $to, $label="")
 Flow_($from, $to, $label, back)
 !endprocedure
 
+' Flow style customization procedures
+!procedure SetFlowStyle($style="solid")
+!$ARROW_STYLE = $style
+!endprocedure
+
+!procedure SetFlowColor($color="black")
+!$ARROW_COLOR = $color
+!endprocedure
+
+!procedure SetFlowFontColor($color="black")
+!$ARROW_FONTCOLOR = $color
+!endprocedure
+
+!procedure SetFlowFontSize($size=13)
+!$ARROW_FONTSIZE = $size
+!endprocedure
+
+!procedure SetFlowPenWidth($width=1)
+!$PENWIDTH = $width
+!endprocedure
+
+' Flow type customization
+!procedure SetFlowType($type="normal")
+!if ($type == "normal")
+  SetFlowStyle("solid")
+  SetFlowPenWidth(1)
+!elseif ($type == "bold")
+  SetFlowStyle("bold")
+  SetFlowPenWidth(2)
+!elseif ($type == "dashed")
+  SetFlowStyle("dashed")
+  SetFlowPenWidth(1)
+!elseif ($type == "dotted")
+  SetFlowStyle("dotted")
+  SetFlowPenWidth(1)
+!endif
+!endprocedure
+
+' Batch flow customization
+!procedure SetAllFlowProperties($style="solid", $color="black", $fontColor="black", $fontSize=13, $penWidth=1)
+SetFlowStyle($style)
+SetFlowColor($color)
+SetFlowFontColor($fontColor)
+SetFlowFontSize($fontSize)
+SetFlowPenWidth($penWidth)
+!endprocedure
+
+' Helper Functions
+' ##################################
+
+' Label formatting
+!unquoted function getLabel($label, $id, $elementType)
+  !$formattedLabel = "" 
+  !if ($elementType == "process")
+    !$formattedLabel = $id + " | " + $label + "\n\n\n"
+  !endif
+  !if ($elementType == "external")
+    !$formattedLabel = $label
+  !endif
+  !if ($elementType == "datastore")
+    !$formattedLabel = "{<f0>" + $id + " |<f1> "+ $label + "}"
+  !endif
+  !return $formattedLabel
+!endfunction
