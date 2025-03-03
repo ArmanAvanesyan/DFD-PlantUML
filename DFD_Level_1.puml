@@ -1,24 +1,104 @@
-!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/test/main/DFD.puml
-!$level="DFD Level 1"
+' Include base components and fl
+!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/DFD-PlantUML/main/DFD.puml
 
-!unquoted procedure Process($label)
+' Default styles and settings for Contex
+!$LEVEL="DFD Level 1"
+
+!$TITLE_FONTSIZE = $DEFAULT_TITLE_FONTSIZE
+!$TITLE_FONTCOLOR = $DEFAULT_TITLE_FONTCOLOR
+!$SUBTITLE_FONTSIZE = $DEFAULT_SUBTITLE_FONTSIZE
+!$SUBTITLE_FONTCOLOR = $DEFAULT_SUBTITLE_FONTCOLOR
+
+!$RANKDIR = $DEFAULT_RANKDIR
+!$RANKSEP = $DEFAULT_RANKSEP
+
+!$EXTERNAL_FILLCOLOR ?= $DEFAULT_FILLCOLOR
+!$EXTERNAL_STYLE ?= $DEFAULT_STYLE
+!$EXTERNAL_FONTCOLOR ?= $DEFAULT_FONTCOLOR
+!$EXTERNAL_FONTSIZE ?= $DEFAULT_FONTSIZE
+!$EXTERNAL_SHAPE ?= "box"
+!$EXTERNAL_FILLCOLOR ?= $DEFAULT_FILLCOLOR
+!$EXTERNAL_WIDTH ?= $DEFAULT_WIDTH
+!$EXTERNAL_HEIGHT ?= 2
+
+!$PROCESS_FILLCOLOR ?= $DEFAULT_FILLCOLOR
+!$PROCESS_STYLE ?= $DEFAULT_STYLE
+!$PROCESS_FONTCOLOR ?= $DEFAULT_FONTCOLOR
+!$PROCESS_FONTSIZE ?= $DEFAULT_FONTSIZE
+!$PROCESS_SHAPE ?= "Mrecord"
+!$PROCESS_FILLCOLOR ?= $DEFAULT_FILLCOLOR
+!$PROCESS_WIDTH ?= $DEFAULT_WIDTH
+!$PROCESS_HEIGHT ?= 1
+
+!$DATASTORE_STYLE = $DEFAULT_DATASTORE_STYLE
+!$DATASTORE_FILLCOLOR = $DEFAULT_DATASTORE_FILLCOLOR
+!$DATASTORE_SHAPE = "record"
+!$DATASTORE_WIDTH = $DEFAULT_DATASTORE_WIDTH
+!$DATASTORE_HEIGHT = $DEFAULT_DATASTORE_HEIGHT
+
+' SubProcess
+!unquoted procedure SubProcess($label)
 subgraph cluster_level1{
-graph [clusterrank=local rankdir=TB labeljust=c labelloc=t color=grey \
-label="$label"]
+graph [clusterrank=local rankdir=TB labeljust=c labelloc=t color=grey label="$label"]
 !endprocedure
 
 !procedure DataFlows()
 }
 !endprocedure
 
-!unquoted procedure External($alias, $label)
-    $alias [label="$label" shape=box fillcolor=lightsteelblue1 style=filled fontcolor="#000000"  fontsize=12 color=grey width=1 height=2];
+' External Entity
+!unquoted procedure External($alias, $label, $id="")
+    Component($alias, $label, $id, $EXTERNAL_SHAPE, $EXTERNAL_FILLCOLOR, $EXTERNAL_WIDTH, $EXTERNAL_HEIGHT, "external")
 !endprocedure
 
-!unquoted procedure SubProcess($alias, $id, $label)
-   $alias [label="$id | $label\n\n\n" shape=Mrecord fillcolor=lightsteelblue1 style=filled fontcolor="#000000" fontsize=12 color=grey width=2];
+' External Entity customization
+!procedure SetExternalStyle($style="filled")
+!$EXTERNAL_STYLE = $style
 !endprocedure
 
-!procedure DataStore($alias, $label)
-    $alias [label="{<f0>D |<f1> $label}" shape=record fillcolor=lightsteelblue1 style=filled fontcolor="#000000" fontsize=12 color=grey width=2];
+!procedure SetExternalFillColor($color="lightgray")
+!$EXTERNAL_FILLCOLOR = $color
+!endprocedure
+
+!procedure SetExternalSize($width=2, $height=1)
+!$EXTERNAL_WIDTH = $width
+!$EXTERNAL_HEIGHT = $height
+!endprocedure
+
+' Process
+!unquoted procedure Process($alias, $label, $id="")
+    Component($alias, $label, $id, $PROCESS_SHAPE, $PROCESS_FILLCOLOR, $PROCESS_WIDTH, $PROCESS_HEIGHT, "process")
+!endprocedure
+
+' Process customization
+!procedure SetProcessStyle($style="filled")
+!$PROCESS_STYLE = $stylegit
+!endprocedure
+
+!procedure SetProcessFillColor($color="lightsteelblue1")
+!$PROCESS_FILLCOLOR = $color
+!endprocedure
+
+!procedure SetProcessSize($width=2, $height=1)
+!$PROCESS_WIDTH = $width
+!$PROCESS_HEIGHT = $height
+!endprocedure
+
+' DataStore
+!unquoted !procedure DataStore($alisa, $label, $id="")
+    Component($alias, $label, $id, $DATASTORE_SHAPE $DATASTORE_FILLCOLOR, $DATASTORE_WIDTH, $DATASTORE_HEIGHT, "datastotre")
+!endprocedure
+
+' DataStore customization
+!procedure SetDataStoreStyle($style="filled")
+!$DATASTORE_STYLE = $style
+!endprocedure
+
+!procedure SetDataStoreFillColor($color="lightgray")
+!$DATASTORE_FILLCOLOR = $color
+!endprocedure
+
+!procedure SetDataStoreSize($width=2, $height=1)
+!$DATASTORE_WIDTH = $width
+!$DATASTORE_HEIGHT = $height
 !endprocedure
