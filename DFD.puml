@@ -26,7 +26,6 @@
 ' Default layout settings
 !$DEFAULT_RANKDIR = "LR"
 !$DEFAULT_RANKSEP = 1.5
-!$DEFAULT_NODESEP = 0.5
 
 ' Core Procedures
 ' ##################################
@@ -34,14 +33,22 @@
 ' Title procedure and customization
 !unquoted procedure Title($title)
 !if ($title == "")
-    graph [rankdir=LR ranksep=1.5 labeljust=c labelloc=t label=""]
+    graph [rankdir=$RANKDIR ranksep=$RANKSEP label=""]
 !else
-    graph [rankdir=LR ranksep=1.5 labeljust=c labelloc=t \
+    graph [rankdir=$RANKDIR ranksep=$RANKSEP labeljust=c labelloc=t \
     label=<<TABLE BORDER="0" CELLBORDER="0"> \
     <TR><TD><FONT POINT-SIZE="$TITLE_FONTSIZE" COLOR="$TITLE_FONTCOLOR">$title</FONT></TD></TR> \
     <TR><TD><FONT POINT-SIZE="$SUBTITLE_FONTSIZE" COLOR="$SUBTITLE_FONTCOLOR">$LEVEL</FONT></TD></TR> \
     </TABLE>>]
 !endif
+!endprocedure
+
+!procedure SetRankDir($dir)
+!$RANK_DIR = $dir
+!endprocedure
+
+!procedure SetRankSep($sep)
+!RANKSEP = $sep
 !endprocedure
 
 !procedure SetTitleFontSize($size)
