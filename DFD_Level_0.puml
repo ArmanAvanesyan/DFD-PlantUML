@@ -1,4 +1,4 @@
-!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/test/main/DFD.puml
+!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/DFD-PlantUML/main/DFD.puml
 !$level="Context Diagram (DFD Level 0)"
 
 !unquoted procedure External($alias, $label)
