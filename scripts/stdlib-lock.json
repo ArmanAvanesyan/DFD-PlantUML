@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "stdlib": {
+    "repository": "https://github.com/plantuml/plantuml-stdlib.git",
+    "revision": "d4a391be62499063d967348b975e5e6407db77a5"
+  },
+  "plantuml": {
+    "repository": "https://github.com/plantuml/plantuml.git",
+    "revision": "18d0aae311a4f1eb3723bb4b0ad939185e22f166"
+  },
+  "encoder_command": [
+    "sh",
+    "gradlew",
+    "--no-daemon",
+    "--max-workers=2",
+    "runSpm"
+  ],
+  "jar_command": [
+    "sh",
+    "gradlew",
+    "--no-daemon",
+    "--max-workers=2",
+    "jar",
+    "-Pfast"
+  ],
+  "toolchain": "current",
+  "jdk_image": "eclipse-temurin@sha256:074d6f95f1e69965dbd23750a37ec3b234025d0864e9821e0b1fba0763a3e853",
+  "jdk_version": "Temurin 21.0.12.1+1"
+}

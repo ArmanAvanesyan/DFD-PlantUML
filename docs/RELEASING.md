@@ -56,4 +56,4 @@ Only after separate authorization to publish should a maintainer choose the fina
 
 ## Preview stdlib preparation
 
-Run the deterministic export/check commands in [stdlib status](STDLIB.md) against the accepted committed candidate. Keep the adjacent provenance manifest. Actual candidate-JAR integration remains a separate required gate before any future stdlib submission. Candidate evidence does not establish support in an official PlantUML release and does not authorize submission or publication.
+Run the deterministic export/check commands and actual candidate-JAR integration in [stdlib status](STDLIB.md) against the accepted committed candidate. Keep the export manifest, upstream source pins, compiler/runtime identities, generated resource hashes, JAR hash, and offline local/bundled parity evidence. Review representative SVG/PNG output. Candidate evidence does not establish support in an official PlantUML release and does not authorize submission or publication.
