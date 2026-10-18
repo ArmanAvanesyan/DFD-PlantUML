@@ -1,0 +1,15 @@
+@startdot
+!include ../../DFD_Level_1.puml
+
+!$label = "Quotes " + %chr(34) + "yes" + %chr(34) + " & <tags> {x|y} café Հայերեն"
+startDfd($label)
+External(U, $label)
+Process($label)
+SubProcess(P, "1", $label)
+DataStore(D, $label)
+DataFlows()
+Flow(U, P, $label)
+!$multiline = "first" + %chr(10) + "second"
+Flow(P, D, $multiline)
+endDfd()
+@enddot

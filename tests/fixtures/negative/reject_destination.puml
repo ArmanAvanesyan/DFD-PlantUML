@@ -1,0 +1,9 @@
+@startdot
+!include ../../DFD_Level_0.puml
+
+SetValidation(1)
+startDfd()
+Process(P, "System")
+Flow(P, Missing)
+endDfd()
+@enddot

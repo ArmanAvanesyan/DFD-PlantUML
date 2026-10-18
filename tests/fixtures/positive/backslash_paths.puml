@@ -1,0 +1,15 @@
+@startdot
+!include ../../DFD_Level_0.puml
+
+!$slash = %chr(92)
+!$unc = $slash + $slash + "server" + $slash + "share"
+!$double = "path" + $slash + $slash + "tail"
+!$trailing = "end" + $slash + $slash
+!$single = "one" + $slash
+startDfd($unc)
+External(U, $unc)
+Process(P, $double)
+Flow(U, P, $trailing)
+BiFlow(P, U, $single)
+endDfd()
+@enddot

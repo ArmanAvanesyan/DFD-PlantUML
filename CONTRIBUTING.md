@@ -11,3 +11,5 @@ After pushing, run `python3 scripts/check.py --remote-ref FULL_COMMIT_SHA` to ex
 PRs should explain the diagram behavior before and after the change, identify any source migration, and report verification. Maintainers review and merge separately. Tags/releases are deliberate follow-up actions; submitting a PR never publishes a release. There is no automatic stale-issue closure policy.
 
 Adapted from the contribution-guidance branch inspected during consolidation; its unimplemented automation policy was omitted.
+
+Public contracts are documented in the [API reference](docs/API.md), [architecture](docs/ARCHITECTURE.md), and [compatibility guide](docs/COMPATIBILITY.md). Keep these aligned with observed implementation behavior. See [stdlib status](docs/STDLIB.md) before making bundled-installation claims.

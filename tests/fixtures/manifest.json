@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "name": "empty_title",
+      "path": "positive/empty_title.puml",
+      "expected_diagnostic": null,
+      "output_count": 1
+    },
+    {
+      "name": "optional_ids",
+      "path": "positive/optional_ids.puml",
+      "expected_diagnostic": null,
+      "output_count": 1
+    },
+    {
+      "name": "permissive",
+      "path": "positive/permissive.puml",
+      "expected_diagnostic": null,
+      "output_count": 1
+    },
+    {
+      "name": "repeat_include",
+      "path": "positive/repeat_include.puml",
+      "expected_diagnostic": null,
+      "output_count": 1
+    },
+    {
+      "name": "validated",
+      "path": "positive/validated.puml",
+      "expected_diagnostic": null,
+      "output_count": 1
+    },
+    {
+      "name": "styles",
+      "path": "positive/styles.puml",
+      "expected_diagnostic": null,
+      "output_count": 1
+    },
+    {
+      "name": "special_labels",
+      "path": "positive/special_labels.puml",
+      "expected_diagnostic": null,
+      "output_count": 1
+    },
+    {
+      "name": "flow_directions",
+      "path": "positive/flow_directions.puml",
+      "expected_diagnostic": null,
+      "output_count": 1
+    },
+    {
+      "name": "legacy_newlines",
+      "path": "positive/legacy_newlines.puml",
+      "expected_diagnostic": null,
+      "output_count": 1
+    },
+    {
+      "name": "literal_newlines",
+      "path": "positive/literal_newlines.puml",
+      "expected_diagnostic": null,
+      "output_count": 1
+    },
+    {
+      "name": "backslash_paths",
+      "path": "positive/backslash_paths.puml",
+      "expected_diagnostic": null,
+      "output_count": 1
+    },
+    {
+      "name": "backslash",
+      "path": "positive/backslash.puml",
+      "expected_diagnostic": null,
+      "output_count": 1
+    },
+    {
+      "name": "reject_second_process",
+      "path": "negative/reject_second_process.puml",
+      "expected_diagnostic": "DFD Level 0 allows only one process",
+      "output_count": 1
+    },
+    {
+      "name": "reject_datastore",
+      "path": "negative/reject_datastore.puml",
+      "expected_diagnostic": "Data stores are not allowed",
+      "output_count": 1
+    },
+    {
+      "name": "reject_substring",
+      "path": "negative/reject_substring.puml",
+      "expected_diagnostic": "Unknown flow source: P1",
+      "output_count": 1
+    },
+    {
+      "name": "reject_destination",
+      "path": "negative/reject_destination.puml",
+      "expected_diagnostic": "Unknown flow destination: Missing",
+      "output_count": 1
+    },
+    {
+      "name": "reject_unclosed",
+      "path": "negative/reject_unclosed.puml",
+      "expected_diagnostic": "Close the Level 1 boundary",
+      "output_count": 1
+    },
+    {
+      "name": "reject_graphviz",
+      "path": "negative/reject_graphviz.puml",
+      "expected_diagnostic": "syntax error",
+      "output_count": 1
+    },
+    {
+      "name": "reject_close",
+      "path": "negative/reject_close.puml",
+      "expected_diagnostic": "Boundary close requires",
+      "output_count": 1
+    },
+    {
+      "name": "multiple",
+      "path": "positive/multiple.puml",
+      "expected_diagnostic": null,
+      "output_count": 2
+    },
+    {
+      "name": "legacy_uml",
+      "path": "negative/legacy_uml.puml",
+      "expected_diagnostic": {
+        "baseline": null,
+        "current": "Syntax Error"
+      },
+      "output_count": 1
+    }
+  ]
+}

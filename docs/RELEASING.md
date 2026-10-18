@@ -50,6 +50,10 @@ Rebuilding an unchanged source tree with the same source revision must yield the
 
 Review the [Unreleased changelog](../CHANGELOG.md), [migration guide](MIGRATION.md), and [baseline provenance](https://github.com/ArmanAvanesyan/DFD-PlantUML/blob/main/docs/BASELINE.md). Confirm the supported API, remote installation requirement, line-break behavior, experimental exclusions, and renderer limitations are documented. Keep the existing historical `v0.1.0` tag unchanged: its library files are empty, so the usable pre-consolidation `main` commit is the compatibility reference.
 
-Record the accepted candidate SHA, toolchain versions, check results, visual review, archive hash, and compatibility notes in the PR. Select the next version only after that review; `v0.2.0` is a proposal rather than an assigned version. Merge changes through review without automatic tagging or publication.
+Record the accepted candidate SHA, toolchain versions, check results, visual review, archive hash, and compatibility notes in the PR. Select the next version only after that review; Merge changes through review without automatic tagging or publication.
 
 Only after separate authorization to publish should a maintainer choose the final release version, ensure the accepted source commit is on the official default branch, create its immutable tag, and publish the verified archive, checksums, and reviewed release notes. Any source change after acceptance requires a new candidate gate. This document deliberately provides no command that creates a tag or release.
+
+## Proposed stdlib preparation
+
+Bundled integration is currently proposed, not shipped. Before a future stdlib submission, require the deterministic export and actual candidate-JAR checks described in [stdlib status](STDLIB.md). Candidate evidence does not establish support in an official PlantUML release and does not authorize submission or publication.

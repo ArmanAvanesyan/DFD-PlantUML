@@ -40,7 +40,7 @@ The reference for compatibility is the previously usable official `main` commit 
 
 Single-backslash `\n` sequences retain the legacy meaning of a line break in node labels, flow labels, and titles. Use a doubled backslash (`\\n`) when literal backslash-plus-`n` text is intended. Actual line breaks are accepted too; construct one in a variable with `%chr(10)` and pass the variable to the macro. Other backslashes, including doubled UNC prefixes and trailing backslashes, remain literal. Only a run immediately before `n` uses the escape rule: each pair represents one literal backslash, and an unpaired backslash makes `n` a line break. Quotes, HTML and record punctuation, and Unicode are escaped as text. Aliases must remain simple DOT identifiers, such as `Customer` or `P1`; arbitrary DOT fragments are outside the public API.
 
-Customization setters affect subsequent output. Set graph and title properties before `startDfd()`, and element/flow properties before their calls. Quote fractional dimensions, for example `SetProcessSize("2.5", "1.2")`. See the [API reference](../README.md#api-and-customization) for supported setters.
+Customization setters affect subsequent output. Set graph and title properties before `startDfd()`, and element/flow properties before their calls. Quote fractional dimensions, for example `SetProcessSize("2.5", "1.2")`. See the [API reference](API.md) for supported setters.
 
 Validation stays off by default. Add `SetValidation(1)` before `startDfd()` to reject a second Level 0 process, Level 0 datastores, and flow endpoints that have not been declared. Endpoint matching is exact. This checks structure rather than complete DFD semantics. Registry and process count reset at `startDfd()`; style settings persist within a diagram.
 
