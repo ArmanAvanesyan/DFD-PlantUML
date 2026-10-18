@@ -1,0 +1,15 @@
+@startdot
+!include ../../DFD_Level_0.puml
+
+SetAllComponentColors("#ABCDEF", "#123456", "#345678")
+SetAllComponentStyles("dashed")
+SetAllComponentSizes(3, 2)
+SetAllFlowProperties("dashed", "#AA0000", "#0000AA", 15, 3)
+startDfd()
+External(U, "User")
+Process(P, "System")
+Flow(U, P, "label")
+Flow_Back(P, U)
+BiFlow(U, P)
+endDfd()
+@enddot

@@ -19,6 +19,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Verify PNG and archive integrity checks
         run: python3 -m unittest discover -s tests -v
+      - name: Verify documentation links
+        run: python3 scripts/docs.py
       - name: Render offline compatibility and native PNG
         run: python3 -u scripts/check.py --toolchain "${{ matrix.toolchain }}"
       - name: Verify deterministic distribution and fresh offline installation

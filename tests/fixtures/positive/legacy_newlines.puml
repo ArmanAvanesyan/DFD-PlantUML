@@ -1,0 +1,13 @@
+@startdot
+!include ../../DFD_Level_1.puml
+
+startDfd("Title\nsecond")
+External(U, "External\nsecond")
+Process("Boundary\nsecond")
+SubProcess(P, "1", "Process\nsecond")
+DataStore(D, "Store\nsecond")
+DataFlows()
+Flow(U, P, "Flow\nsecond")
+Flow(P, D)
+endDfd()
+@enddot

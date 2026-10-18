@@ -2,9 +2,12 @@
 import importlib.util
 import io
 import json
+import sys
 import unittest
 import zipfile
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 
 spec = importlib.util.spec_from_file_location('distribution', Path(__file__).resolve().parents[1] / 'scripts/distribution.py')
 distribution = importlib.util.module_from_spec(spec)
@@ -88,6 +91,11 @@ class DistributionTests(unittest.TestCase):
     def test_wrong_revision_rejected(self):
         with self.assertRaisesRegex(ValueError, 'revision mismatch'):
             distribution.verify_archive(distribution.build_archive(self.files, self.revision), 'b' * 40)
+
+    def test_packaged_document_link_must_resolve_inside_archive(self):
+        self.files['README.md'] = b'[API](docs/NOT-PACKAGED.md)'
+        with self.assertRaisesRegex(ValueError, 'missing local target'):
+            distribution.verify_archive(distribution.build_archive(self.files, self.revision), self.revision)
 
 
 if __name__ == '__main__':

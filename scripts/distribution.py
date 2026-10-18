@@ -11,12 +11,14 @@ import tempfile
 import zipfile
 import xml.etree.ElementTree as ET
 from pathlib import Path, PurePosixPath
+from docs import require_links
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = 'dfd-plantuml'
 FIXED = ('DFD.puml', 'DFD_Level_0.puml', 'DFD_Level_1.puml', 'LICENSE',
          'README.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'docs/MIGRATION.md',
-         'docs/RELEASING.md', 'docs/rendered/level_0.svg',
+         'docs/RELEASING.md', 'docs/INSTALLATION.md', 'docs/API.md',
+         'docs/COMPATIBILITY.md', 'docs/ARCHITECTURE.md', 'docs/STDLIB.md', 'docs/rendered/level_0.svg',
          'docs/rendered/level_1.svg', 'docs/rendered/customization.svg')
 
 
@@ -72,6 +74,7 @@ def verify_archive(data, revision):
         raise ValueError('Incomplete distribution')
     if manifest.get('files') != {name: digest(content) for name, content in sorted(members.items())}:
         raise ValueError('Manifest checksum mismatch')
+    require_links(members)
     return members
 
 

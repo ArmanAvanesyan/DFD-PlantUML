@@ -1,0 +1,13 @@
+@startdot
+!include ../../DFD_Level_1.puml
+
+startDfd()
+External(U, "User", "E1")
+Process("System")
+SubProcess(P, "1.1", "Work")
+DataStore(D, "Records", "D2")
+DataFlows()
+Flow(U, P)
+Flow(P, D)
+endDfd()
+@enddot

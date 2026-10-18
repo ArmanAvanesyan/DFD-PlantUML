@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Render compatibility fixtures in the digest-pinned toolchain; stdlib only."""
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -99,10 +100,38 @@ def inspect_png(path):
         return str(exc)
 
 
-def fixture(directory, name, level, body, expected=None, prelude=''):
-    path = directory / (name + '.puml')
-    path.write_text(f'@startdot\n!include ../../DFD_Level_{level}.puml\n{prelude}\n{body}\n@enddot\n')
-    return path, expected
+def load_cases(toolchain='baseline', fixture_root=None):
+    """Load immutable source fixtures; paths are relative to build/<suite>/.
+
+    Consumers may adapt include routing for bundled installation. Diagnostic
+    expectations are engine-specific only where the engine changed its contract.
+    """
+    if toolchain not in ('baseline', 'current'):
+        raise ValueError('Unknown fixture toolchain: ' + toolchain)
+    directory = Path(fixture_root) if fixture_root is not None else ROOT / 'tests' / 'fixtures'
+    manifest = json.loads((directory / 'manifest.json').read_text())
+    if manifest.get('schema_version') != 1:
+        raise ValueError('Unsupported fixture manifest schema')
+    cases, names = [], set()
+    for entry in manifest['cases']:
+        name = entry['name']
+        if not re.fullmatch(r'[a-z][a-z0-9_]*', name) or name in names:
+            raise ValueError('Invalid or duplicate fixture name: ' + name)
+        names.add(name)
+        relative = Path(entry['path'])
+        if relative.is_absolute() or '..' in relative.parts:
+            raise ValueError('Fixture path must stay inside fixture directory')
+        expected = entry['expected_diagnostic']
+        if isinstance(expected, dict):
+            expected = expected[toolchain]
+        if expected is not None and (not isinstance(expected, str) or not expected):
+            raise ValueError('Expected diagnostic must be nonempty or null')
+        count = entry['output_count']
+        if type(count) is not int or count < 1:
+            raise ValueError('Output count must be a positive integer')
+        source = (directory / relative).read_text()
+        cases.append(dict(name=name, source=source, expected_diagnostic=expected, output_count=count))
+    return cases
 
 
 def main():
@@ -136,79 +165,11 @@ def main():
     path.write_text(re.sub(r'^!\$DFD_ROOT = .*\n', '', installation[0], flags=re.M).replace('!includeurl $DFD_ROOT/', '!include ../../'))
     cases.append((path, None))
     if not args.remote_ref:
-        cases += [
-            fixture(out, 'empty_title', 0, 'startDfd()\nExternal(U, "User")\nProcess(P, "System")\nFlow(U, P)\nendDfd()'),
-            fixture(out, 'optional_ids', 1, 'startDfd()\nExternal(U, "User", "E1")\nProcess("System")\nSubProcess(P, "1.1", "Work")\nDataStore(D, "Records", "D2")\nDataFlows()\nFlow(U, P)\nFlow(P, D)\nendDfd()'),
-            fixture(out, 'permissive', 0, 'startDfd()\nProcess(P1, "One")\nProcess(P2, "Two")\nDataStore(D, "Records")\nFlow(P1, Undeclared)\nendDfd()'),
-            fixture(out, 'repeat_include', 0, 'startDfd()\nExternal(U, "User")\nProcess(P, "System")\nFlow(U, P)\nendDfd()', prelude='!include ../../DFD_Level_0.puml\n!include ../../DFD.puml'),
-            fixture(out, 'validated', 0, 'SetValidation(1)\nstartDfd()\nExternal(P10, "User")\nProcess(P1, "System")\nFlow(P10, P1)\nendDfd()'),
-            fixture(out, 'styles', 0, 'SetAllComponentColors("#ABCDEF", "#123456", "#345678")\nSetAllComponentStyles("dashed")\nSetAllComponentSizes(3, 2)\nSetAllFlowProperties("dashed", "#AA0000", "#0000AA", 15, 3)\nstartDfd()\nExternal(U, "User")\nProcess(P, "System")\nFlow(U, P, "label")\nFlow_Back(P, U)\nBiFlow(U, P)\nendDfd()'),
-            fixture(out, 'special_labels', 1, '''!$label = "Quotes " + %chr(34) + "yes" + %chr(34) + " & <tags> {x|y} café Հայերեն"
-startDfd($label)
-External(U, $label)
-Process($label)
-SubProcess(P, "1", $label)
-DataStore(D, $label)
-DataFlows()
-Flow(U, P, $label)
-!$multiline = "first" + %chr(10) + "second"
-Flow(P, D, $multiline)
-endDfd()'''),
-            fixture(out, 'flow_directions', 0, 'startDfd()\nExternal(U, "Error: Syntax Error is a valid label")\nProcess(P, "System")\nFlow(U, P)\nFlow_Back(P, U, "backward")\nBiFlow(U, P)\nendDfd()'),
-            fixture(out, 'legacy_newlines', 1, r'''startDfd("Title\nsecond")
-External(U, "External\nsecond")
-Process("Boundary\nsecond")
-SubProcess(P, "1", "Process\nsecond")
-DataStore(D, "Store\nsecond")
-DataFlows()
-Flow(U, P, "Flow\nsecond")
-Flow(P, D)
-endDfd()'''),
-            fixture(out, 'literal_newlines', 0, r'''startDfd("Title\\nsecond")
-External(U, "C:\\new")
-Process(P, "Process\\nsecond")
-Flow(U, P, "Flow\\nsecond")
-endDfd()'''),
-            fixture(out, 'backslash_paths', 0, '''!$slash = %chr(92)
-!$unc = $slash + $slash + "server" + $slash + "share"
-!$double = "path" + $slash + $slash + "tail"
-!$trailing = "end" + $slash + $slash
-!$single = "one" + $slash
-startDfd($unc)
-External(U, $unc)
-Process(P, $double)
-Flow(U, P, $trailing)
-BiFlow(P, U, $single)
-endDfd()'''),
-            fixture(out, 'backslash',
- 0, '''!$label = "C:" + %chr(92) + "temp"
-startDfd()
-External(U, $label)
-Process(P, "System")
-Flow(U, P, $label)
-endDfd()'''),
-            fixture(out, 'reject_second_process', 0, 'SetValidation(1)\nstartDfd()\nProcess(P1, "One")\nProcess(P2, "Two")\nendDfd()', 'DFD Level 0 allows only one process'),
-            fixture(out, 'reject_datastore', 0, 'SetValidation(1)\nstartDfd()\nDataStore(D, "Records")\nendDfd()', 'Data stores are not allowed'),
-            fixture(out, 'reject_substring', 0, 'SetValidation(1)\nstartDfd()\nExternal(P10, "User")\nProcess(System, "System")\nFlow(P1, System)\nendDfd()', 'Unknown flow source: P1'),
-            fixture(out, 'reject_destination', 0, 'SetValidation(1)\nstartDfd()\nProcess(P, "System")\nFlow(P, Missing)\nendDfd()', 'Unknown flow destination: Missing'),
-            fixture(out, 'reject_unclosed', 1, 'startDfd()\nProcess("System")\nendDfd()', 'Close the Level 1 boundary'),
-            fixture(out, 'reject_graphviz', 0, 'startDfd()\nthis is invalid dot !!!\nendDfd()', 'syntax error'),
-            fixture(out, 'reject_close', 1, 'startDfd()\nDataFlows()\nendDfd()', 'Boundary close requires'),
-        ]
-        # A second @startdot must have independent globals and output, even for the same aliases.
-        multi = out / 'multiple.puml'
-        multi.write_text(('''@startdot
-!include ../../DFD_Level_0.puml
-SetValidation(1)
-startDfd()
-Process(P, "System")
-endDfd()
-@enddot
-''') * 2)
-        cases.append((multi, None))
-        legacy = out / 'legacy_uml.puml'
-        legacy.write_text('@startuml\n!include ../../DFD_Level_0.puml\nstartDfd()\nProcess(P, "Legacy")\nendDfd()\n@enduml\n')
-        cases.append((legacy, None if args.toolchain == 'baseline' else 'Syntax Error'))
+        for case in load_cases(args.toolchain):
+            path = out / (case['name'] + '.puml')
+            path.write_text(case['source'])
+            cases.append((path, case['expected_diagnostic']))
+
     else:
         prefix = f'https://raw.githubusercontent.com/ArmanAvanesyan/DFD-PlantUML/{args.remote_ref}/'
         for path, _ in cases:
@@ -219,6 +180,10 @@ endDfd()
         sys.exit('README examples differ from executable examples')
     (out / 'runtime.json').write_text(json.dumps(dict(LOCK, prepared_image=IMAGE), indent=2) + '\n')
     results = []
+    names = [path.stem for path, _ in cases]
+    if len(names) != len(set(names)):
+        sys.exit('Fixture and example names must be unique')
+    output_counts = {case['name']: case['output_count'] for case in load_cases(args.toolchain)}
     for path, expected in cases:
         rel = path.name if args.remote_ref else path.relative_to(ROOT).as_posix()
         proc = docker(['-charset', 'UTF-8', '-tsvg', rel], online=bool(args.remote_ref))
@@ -246,7 +211,7 @@ endDfd()
             detail = 'expected rejection' if ok else str(messages) + diagnostics[:700]
         else:
             failures = [inspect_svg(p) for p in svgs]
-            ok = proc.returncode == 0 and len(svgs) == (2 if path.stem == 'multiple' else 1) and not any(failures)
+            ok = proc.returncode == 0 and len(svgs) == output_counts.get(path.stem, 1) and not any(failures)
             detail = str(failures) + proc.stderr if not ok else 'valid SVG'
             if ok:
                 pre = docker(['-charset', 'UTF-8', '-preproc', rel], online=bool(args.remote_ref))
@@ -293,6 +258,8 @@ endDfd()
             bad = out / (name + '.svg')
             bad.write_text(content)
             results.append({'case': 'detector_' + name, 'passed': bool(inspect_svg(bad)), 'detail': 'error artifact rejected'})
+    artifacts = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(out.iterdir()) if path.is_file()}
+    (out / 'artifacts.json').write_text(json.dumps(artifacts, indent=2) + '\n')
     (out / 'results.json').write_text(json.dumps(results, indent=2) + '\n')
     passed = sum(item['passed'] for item in results)
     print(f'{passed}/{len(results)} checks passed; evidence: {out}')
