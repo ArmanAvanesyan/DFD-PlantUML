@@ -1,5 +1,5 @@
 ' Context diagram: published Level 0 API.
-!include ./DFD.puml
+!include DFD.puml
 !ifndef DFD_LEVEL_0_LOADED
 !define DFD_LEVEL_0_LOADED
 !global $DFD_LEVEL = 0

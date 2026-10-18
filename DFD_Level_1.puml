@@ -1,5 +1,5 @@
 ' System decomposition: published Level 1 API.
-!include ./DFD.puml
+!include DFD.puml
 !ifndef DFD_LEVEL_1_LOADED
 !define DFD_LEVEL_1_LOADED
 !global $DFD_LEVEL = 1
