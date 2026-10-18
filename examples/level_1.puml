@@ -1,0 +1,15 @@
+@startuml
+!include ../DFD_Level_1.puml
+startDfd(Loan processing)
+External(Customer, "Customer")
+Process("Loan System")
+SubProcess(Validate, "1.0", "Validate application")
+SubProcess(Assess, "2.0", "Assess risk")
+DataStore(Applications, "Applications")
+DataFlows()
+Flow(Customer, Validate, "application")
+Flow(Validate, Assess, "validated data")
+BiFlow(Assess, Applications, "assessment")
+Flow_Back(Customer, Assess, "decision")
+endDfd()
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+!include ../DFD_Level_0.puml
+SetTitleFontColor("#234567")
+SetSubtitleFontColor("#345678")
+SetExternalFillColor("#FFFDE7")
+SetProcessFillColor("#E3F2FD")
+SetProcessSize("2.5", "1.2")
+SetComponentFontSize(14)
+SetAllFlowProperties("dashed", "#BB2222", "#234567", 12, 2)
+SetRankDir("TB")
+SetRankSep("1.2")
+SetSplines("polyline")
+SetValidation(1)
+startDfd(Customized diagram)
+External(User, "Customer")
+Process(System, "Loan System", "0")
+Flow(User, System, "request")
+BiFlow(System, User)
+endDfd()
+@enduml

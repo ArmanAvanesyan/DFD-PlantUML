@@ -1,42 +1,314 @@
-!function getTitle($title)
-    !return $title
+' DFD-PlantUML shared DOT renderer. MIT licensed.
+!ifndef DFD_CORE_LOADED
+!define DFD_CORE_LOADED
+!global $DFD_VALIDATE = 0
+!global $DFD_LEVEL = -1
+!global $DFD_NODES = "|"
+!global $DFD_PROCESS_COUNT = 0
+!global $DFD_CLUSTER_OPEN = 0
+!global $LEVEL = "DFD Diagram"
+
+!global $TITLE_FONTSIZE = 16
+!global $TITLE_FONTCOLOR = "black"
+!global $SUBTITLE_FONTSIZE = 10
+!global $SUBTITLE_FONTCOLOR = "black"
+!global $FONTCOLOR = "#000000"
+!global $FONTSIZE = 12
+!global $BORDERCOLOR = "grey"
+!global $ARROW_STYLE = "solid"
+!global $ARROW_COLOR = "black"
+!global $ARROW_FONTCOLOR = "black"
+!global $ARROW_FONTSIZE = 13
+!global $PENWIDTH = 1
+!global $RANKDIR = "LR"
+!global $RANKSEP = "1.5"
+!global $NODESEP = "0.5"
+!global $SPLINES = "spline"
+!global $CONCENTRATE = "false"
+!global $EXTERNAL_SHAPE = "box"
+!global $EXTERNAL_FILLCOLOR = "lightsteelblue1"
+!global $EXTERNAL_STYLE = "filled"
+!global $EXTERNAL_WIDTH = 1
+!global $EXTERNAL_HEIGHT = 2
+!global $PROCESS_SHAPE = "Mrecord"
+!global $PROCESS_FILLCOLOR = "lightsteelblue1"
+!global $PROCESS_STYLE = "filled"
+!global $PROCESS_WIDTH = 2
+!global $PROCESS_HEIGHT = 0
+!global $DATASTORE_SHAPE = "record"
+!global $DATASTORE_FILLCOLOR = "lightsteelblue1"
+!global $DATASTORE_STYLE = "filled"
+!global $DATASTORE_WIDTH = 2
+!global $DATASTORE_HEIGHT = 0
+
+!function DFD_Replace($text, $search, $replacement)
+  !$result = ""
+  !$index = 0
+  !while ($index < %strlen($text))
+    !if (%substr($text, $index, %strlen($search)) == $search)
+      !$result = $result + $replacement
+      !$index = $index + %strlen($search)
+    !else
+      !$result = $result + %substr($text, $index, 1)
+      !$index = $index + 1
+    !endif
+  !endwhile
+  !return $result
 !endfunction
 
-!procedure Title($title, $level)
-    graph [rankdir=LR ranksep=1.5 labeljust=c labelloc=t \
-    label=<<TABLE BORDER="0" CELLBORDER="0"> \
-    <TR><TD><FONT POINT-SIZE="16">$title</FONT></TD></TR> \
-    <TR><TD><FONT POINT-SIZE="10">$level</FONT></TD></TR> \
-    </TABLE>> ]
+' Escape DOT strings; record labels additionally escape record metacharacters.
+!function DFD_Text($text)
+  !$text = DFD_Replace($text, %chr(92), %chr(92) + %chr(92))
+  !$text = DFD_Replace($text, %chr(34), %chr(92) + %chr(34))
+  !$text = DFD_Replace($text, %chr(13), "")
+  !$text = DFD_Replace($text, %chr(10), %chr(92) + "n")
+  !return $text
+!endfunction
+!function DFD_RecordText($text)
+  !$text = DFD_Text($text)
+  !foreach $char in ["{", "}", "|", "<", ">"]
+    !$text = DFD_Replace($text, $char, %chr(92) + $char)
+  !endfor
+  !return $text
+!endfunction
+!function DFD_Html($text)
+  !$text = DFD_Replace($text, "&", "&amp;")
+  !$text = DFD_Replace($text, "<", "&lt;")
+  !$text = DFD_Replace($text, ">", "&gt;")
+  !$text = DFD_Replace($text, %chr(34), "&quot;")
+  !$text = DFD_Replace($text, %chr(10), "<BR/>")
+  !return $text
+!endfunction
+
+!procedure DFD_Register($alias)
+  !global $DFD_NODES = $DFD_NODES + $alias + "|"
+!endprocedure
+!procedure SetValidation($enabled=1)
+  !global $DFD_VALIDATE = $enabled
 !endprocedure
 
-!procedure startDfd($label)
-digraph dfd2 {
-Title($label, $level)
-node[shape=record];
+!unquoted procedure startDfd($title="")
+  !global $DFD_NODES = "|"
+  !global $DFD_PROCESS_COUNT = 0
+  !global $DFD_CLUSTER_OPEN = 0
+digraph dfd {
+graph [rankdir=$RANKDIR ranksep=$RANKSEP nodesep=$NODESEP splines=$SPLINES concentrate=$CONCENTRATE]
+node [shape=record]
+Title($title)
 !endprocedure
-
 !procedure endDfd()
+  !if $DFD_CLUSTER_OPEN
+    !assert %false() : "Close the Level 1 boundary before ending the diagram"
+  !endif
 }
 !endprocedure
-
-!unquoted procedure Flow_($from, $to, $label="", $direction="")
-  !if ($label != "")
-    $from -> $to [label="$label" dir=$direction]
+!unquoted procedure Title($title)
+  !if ($title == "")
+graph [label=""]
   !else
-    $from -> $to [dir=$direction]
+    !$titleText = DFD_Html($title)
+    !$levelText = DFD_Html($LEVEL)
+graph [labeljust=c labelloc=t label=<<TABLE BORDER="0" CELLBORDER="0"><TR><TD><FONT POINT-SIZE="$TITLE_FONTSIZE" COLOR="$TITLE_FONTCOLOR">$titleText</FONT></TD></TR><TR><TD><FONT POINT-SIZE="$SUBTITLE_FONTSIZE" COLOR="$SUBTITLE_FONTCOLOR">$levelText</FONT></TD></TR></TABLE>>]
   !endif
 !endprocedure
 
+!procedure DFD_Component($alias, $label, $id, $type)
+  !$shape = $EXTERNAL_SHAPE
+  !$fill = $EXTERNAL_FILLCOLOR
+  !$style = $EXTERNAL_STYLE
+  !$width = $EXTERNAL_WIDTH
+  !$height = $EXTERNAL_HEIGHT
+  !$text = DFD_Text($label)
+  !if ($type == "external" && $id != "")
+    !$text = DFD_Text($id) + " | " + $text
+  !endif
+  !if ($type == "process")
+    !$shape = $PROCESS_SHAPE
+    !$fill = $PROCESS_FILLCOLOR
+    !$style = $PROCESS_STYLE
+    !$width = $PROCESS_WIDTH
+    !$height = $PROCESS_HEIGHT
+    !$text = DFD_RecordText($id) + " | " + DFD_RecordText($label) + %chr(92) + "n" + %chr(92) + "n"
+  !elseif ($type == "datastore")
+    !$shape = $DATASTORE_SHAPE
+    !$fill = $DATASTORE_FILLCOLOR
+    !$style = $DATASTORE_STYLE
+    !$width = $DATASTORE_WIDTH
+    !$height = $DATASTORE_HEIGHT
+    !$text = "{<f0>" + DFD_RecordText($id) + " |<f1> " + DFD_RecordText($label) + "}"
+  !endif
+DFD_Register($alias)
+$alias [label="$text" shape=$shape fillcolor="$fill" style="$style" fontcolor="$FONTCOLOR" fontsize=$FONTSIZE color="$BORDERCOLOR" width=$width height=$height]
+!endprocedure
+!unquoted procedure External($alias, $label, $id="")
+DFD_Component($alias, $label, $id, "external")
+!endprocedure
+!unquoted procedure External_Entity($alias, $label, $id="")
+External($alias, $label, $id)
+!endprocedure
+!unquoted procedure Flow_($from, $to, $label="", $direction="forward")
+  !if $DFD_VALIDATE
+    !if (%strpos($DFD_NODES, "|" + $from + "|") < 0)
+      !assert %false() : "Unknown flow source: " + $from
+    !endif
+    !if (%strpos($DFD_NODES, "|" + $to + "|") < 0)
+      !assert %false() : "Unknown flow destination: " + $to
+    !endif
+  !endif
+  !$text = DFD_Text($label)
+$from -> $to [label="$text" dir=$direction style="$ARROW_STYLE" color="$ARROW_COLOR" penwidth=$PENWIDTH fontcolor="$ARROW_FONTCOLOR" fontsize=$ARROW_FONTSIZE]
+!endprocedure
 !unquoted procedure Flow($from, $to, $label="")
-Flow_($from, $to, $label, forward)
+Flow_($from, $to, $label, "forward")
 !endprocedure
-
-!unquoted procedure BiFlow($from, $to, $label="")
-Flow_($from, $to, $label, both)
-!endprocedure
-
 !unquoted procedure Flow_Back($from, $to, $label="")
-Flow_($from, $to, $label, back)
+Flow_($from, $to, $label, "back")
+!endprocedure
+!unquoted procedure BiFlow($from, $to, $label="")
+Flow_($from, $to, $label, "both")
 !endprocedure
 
+!procedure SetTitleFontSize($value)
+  !global $TITLE_FONTSIZE = $value
+!endprocedure
+
+!procedure SetTitleFontColor($value)
+  !global $TITLE_FONTCOLOR = $value
+!endprocedure
+
+!procedure SetSubtitleFontSize($value)
+  !global $SUBTITLE_FONTSIZE = $value
+!endprocedure
+
+!procedure SetSubtitleFontColor($value)
+  !global $SUBTITLE_FONTCOLOR = $value
+!endprocedure
+
+!procedure SetComponentFontSize($value)
+  !global $FONTSIZE = $value
+!endprocedure
+
+!procedure SetComponentFontColor($value)
+  !global $FONTCOLOR = $value
+!endprocedure
+
+!procedure SetComponentBorderColor($value)
+  !global $BORDERCOLOR = $value
+!endprocedure
+
+!procedure SetFlowStyle($value)
+  !global $ARROW_STYLE = $value
+!endprocedure
+
+!procedure SetFlowColor($value)
+  !global $ARROW_COLOR = $value
+!endprocedure
+
+!procedure SetFlowFontColor($value)
+  !global $ARROW_FONTCOLOR = $value
+!endprocedure
+
+!procedure SetFlowFontSize($value)
+  !global $ARROW_FONTSIZE = $value
+!endprocedure
+
+!procedure SetFlowPenWidth($value)
+  !global $PENWIDTH = $value
+!endprocedure
+
+!procedure SetRankDir($value)
+  !global $RANKDIR = $value
+!endprocedure
+
+!procedure SetRankSep($value)
+  !global $RANKSEP = $value
+!endprocedure
+
+!procedure SetNodeSep($value)
+  !global $NODESEP = $value
+!endprocedure
+
+!procedure SetSplines($value)
+  !global $SPLINES = $value
+!endprocedure
+
+!procedure SetFlowConcentrate($value)
+  !global $CONCENTRATE = $value
+!endprocedure
+
+!procedure SetExternalStyle($value)
+  !global $EXTERNAL_STYLE = $value
+!endprocedure
+
+!procedure SetExternalFillColor($value)
+  !global $EXTERNAL_FILLCOLOR = $value
+!endprocedure
+
+!procedure SetExternalShape($value)
+  !global $EXTERNAL_SHAPE = $value
+!endprocedure
+
+!procedure SetProcessStyle($value)
+  !global $PROCESS_STYLE = $value
+!endprocedure
+
+!procedure SetProcessFillColor($value)
+  !global $PROCESS_FILLCOLOR = $value
+!endprocedure
+
+!procedure SetProcessShape($value)
+  !global $PROCESS_SHAPE = $value
+!endprocedure
+
+!procedure SetDataStoreStyle($value)
+  !global $DATASTORE_STYLE = $value
+!endprocedure
+
+!procedure SetDataStoreFillColor($value)
+  !global $DATASTORE_FILLCOLOR = $value
+!endprocedure
+
+!procedure SetDataStoreShape($value)
+  !global $DATASTORE_SHAPE = $value
+!endprocedure
+
+!procedure SetExternalSize($width=2, $height=1)
+  !global $EXTERNAL_WIDTH = $width
+  !global $EXTERNAL_HEIGHT = $height
+!endprocedure
+
+!procedure SetProcessSize($width=2, $height=1)
+  !global $PROCESS_WIDTH = $width
+  !global $PROCESS_HEIGHT = $height
+!endprocedure
+
+!procedure SetDataStoreSize($width=2, $height=1)
+  !global $DATASTORE_WIDTH = $width
+  !global $DATASTORE_HEIGHT = $height
+!endprocedure
+
+!procedure SetAllComponentColors($fill, $border="grey", $font="#000000")
+SetExternalFillColor($fill)
+SetProcessFillColor($fill)
+SetDataStoreFillColor($fill)
+SetComponentBorderColor($border)
+SetComponentFontColor($font)
+!endprocedure
+!procedure SetAllComponentStyles($style="filled")
+SetExternalStyle($style)
+SetProcessStyle($style)
+SetDataStoreStyle($style)
+!endprocedure
+!procedure SetAllComponentSizes($width=2, $height=1)
+SetExternalSize($width, $height)
+SetProcessSize($width, $height)
+SetDataStoreSize($width, $height)
+!endprocedure
+!procedure SetAllFlowProperties($style="solid", $color="black", $fontColor="black", $fontSize=13, $penWidth=1)
+SetFlowStyle($style)
+SetFlowColor($color)
+SetFlowFontColor($fontColor)
+SetFlowFontSize($fontSize)
+SetFlowPenWidth($penWidth)
+!endprocedure
+!endif

@@ -1,0 +1,8 @@
+@startuml
+!include DFD_Level_0.puml
+startDfd("Baseline")
+External(User, "Customer")
+Process(System, "Loan System")
+Flow(User,System,"request")
+endDfd()
+@enduml

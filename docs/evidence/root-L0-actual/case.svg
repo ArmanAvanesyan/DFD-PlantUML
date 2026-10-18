@@ -1,0 +1,2 @@
+Warning: Could not load "/usr/local/lib/graphviz/libgvplugin_gd.so.6" - It was found, so perhaps one of its dependents was not.  Try ldd.
+Error: <stdin>: syntax error in line 4 near '('

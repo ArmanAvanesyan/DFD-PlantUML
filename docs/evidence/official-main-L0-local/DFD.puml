@@ -1,0 +1,42 @@
+!function getTitle($title)
+    !return $title
+!endfunction
+
+!procedure Title($title, $level)
+    graph [rankdir=LR ranksep=1.5 labeljust=c labelloc=t \
+    label=<<TABLE BORDER="0" CELLBORDER="0"> \
+    <TR><TD><FONT POINT-SIZE="16">$title</FONT></TD></TR> \
+    <TR><TD><FONT POINT-SIZE="10">$level</FONT></TD></TR> \
+    </TABLE>> ]
+!endprocedure
+
+!procedure startDfd($label)
+digraph dfd2 {
+Title($label, $level)
+node[shape=record];
+!endprocedure
+
+!procedure endDfd()
+}
+!endprocedure
+
+!unquoted procedure Flow_($from, $to, $label="", $direction="")
+  !if ($label != "")
+    $from -> $to [label="$label" dir=$direction]
+  !else
+    $from -> $to [dir=$direction]
+  !endif
+!endprocedure
+
+!unquoted procedure Flow($from, $to, $label="")
+Flow_($from, $to, $label, forward)
+!endprocedure
+
+!unquoted procedure BiFlow($from, $to, $label="")
+Flow_($from, $to, $label, both)
+!endprocedure
+
+!unquoted procedure Flow_Back($from, $to, $label="")
+Flow_($from, $to, $label, back)
+!endprocedure
+

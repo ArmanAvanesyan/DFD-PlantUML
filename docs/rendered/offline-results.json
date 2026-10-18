@@ -1,0 +1,112 @@
+[
+  {
+    "case": "customization",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
+    "case": "level_0",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
+    "case": "level_1",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
+    "case": "empty_title",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
+    "case": "optional_ids",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
+    "case": "permissive",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
+    "case": "repeat_include",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
+    "case": "validated",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
+    "case": "styles",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
+    "case": "special_labels",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
+    "case": "flow_directions",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
+    "case": "backslash",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
+    "case": "reject_second_process",
+    "passed": true,
+    "detail": "expected rejection"
+  },
+  {
+    "case": "reject_datastore",
+    "passed": true,
+    "detail": "expected rejection"
+  },
+  {
+    "case": "reject_substring",
+    "passed": true,
+    "detail": "expected rejection"
+  },
+  {
+    "case": "reject_destination",
+    "passed": true,
+    "detail": "expected rejection"
+  },
+  {
+    "case": "reject_unclosed",
+    "passed": true,
+    "detail": "expected rejection"
+  },
+  {
+    "case": "reject_graphviz",
+    "passed": true,
+    "detail": "expected rejection"
+  },
+  {
+    "case": "reject_close",
+    "passed": true,
+    "detail": "expected rejection"
+  },
+  {
+    "case": "multiple",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
+    "case": "detector_bad_xml",
+    "passed": true,
+    "detail": "error artifact rejected"
+  },
+  {
+    "case": "detector_error_svg",
+    "passed": true,
+    "detail": "error artifact rejected"
+  }
+]

@@ -1,0 +1,12 @@
+@startuml
+!include DFD_Level_1.puml
+startDfd("Baseline")
+External(User, "Customer")
+Process("Loan System")
+SubProcess(System,"1","Validate")
+DataStore(Store,"Loans")
+DataFlows()
+Flow(User,System,"request")
+Flow(System,Store,"save")
+endDfd()
+@enduml

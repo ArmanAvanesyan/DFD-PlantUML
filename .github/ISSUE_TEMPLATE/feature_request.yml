@@ -1,0 +1,10 @@
+name: Feature request
+description: Propose a diagram capability or documentation improvement.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and proposed diagram behavior
+      description: Include example syntax and whether existing calls would change.
+    validations:
+      required: true

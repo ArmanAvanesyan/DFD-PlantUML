@@ -1,0 +1,39 @@
+@startuml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+digraph dfd2 {
+    graph [rankdir=LR ranksep=1.5 labeljust=c labelloc=t \
+    label=<<TABLE BORDER="0" CELLBORDER="0"> \
+    <TR><TD><FONT POINT-SIZE="16">Baseline</FONT></TD></TR> \
+    <TR><TD><FONT POINT-SIZE="10">$level</FONT></TD></TR> \
+    </TABLE>> ]
+node[shape=record];
+    Component(User, Customer, , box, $DEFAULT_FILLCOLOR, $DEFAULT_WIDTH, 2, "external")
+  Component(System, Loan System, , Mrecord, $DEFAULT_FILLCOLOR, $DEFAULT_WIDTH, 1, "process")
+    User -> System [label="request" dir=forward]
+}
+@enduml

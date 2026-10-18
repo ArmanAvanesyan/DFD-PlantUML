@@ -1,0 +1,312 @@
+[
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/FamilyA/DFD.puml",
+    "copy": "familyA-L0-actual/DFD.puml",
+    "sha256": "87c30fc4b05f9d1ba97f2e68303f19230f4359c11e565a43912e6de041994cba"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/FamilyA/DFD_Level_1.puml",
+    "copy": "familyA-L0-actual/DFD_Level_1.puml",
+    "sha256": "453a31dd568bec981712af0d12578be359c78bba6e9ae606814d9b4af6187a10"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/FamilyA/DFD_Level_0.puml",
+    "copy": "familyA-L0-actual/DFD_Level_0.puml",
+    "sha256": "e86be738477d49e205ab7e59628f7fffa81e1ab9ff82ade7dbbc93bc2d50142b"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/FamilyA/DFD.puml",
+    "copy": "familyA-L0-local/DFD.puml",
+    "sha256": "87c30fc4b05f9d1ba97f2e68303f19230f4359c11e565a43912e6de041994cba"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/FamilyA/DFD_Level_1.puml",
+    "copy": "familyA-L0-local/DFD_Level_1.puml",
+    "sha256": "453a31dd568bec981712af0d12578be359c78bba6e9ae606814d9b4af6187a10"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/FamilyA/DFD_Level_0.puml",
+    "copy": "familyA-L0-local/DFD_Level_0.puml",
+    "sha256": "e86be738477d49e205ab7e59628f7fffa81e1ab9ff82ade7dbbc93bc2d50142b"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/FamilyA/DFD.puml",
+    "copy": "familyA-L1-actual/DFD.puml",
+    "sha256": "87c30fc4b05f9d1ba97f2e68303f19230f4359c11e565a43912e6de041994cba"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/FamilyA/DFD_Level_1.puml",
+    "copy": "familyA-L1-actual/DFD_Level_1.puml",
+    "sha256": "453a31dd568bec981712af0d12578be359c78bba6e9ae606814d9b4af6187a10"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/FamilyA/DFD_Level_0.puml",
+    "copy": "familyA-L1-actual/DFD_Level_0.puml",
+    "sha256": "e86be738477d49e205ab7e59628f7fffa81e1ab9ff82ade7dbbc93bc2d50142b"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/FamilyA/DFD.puml",
+    "copy": "familyA-L1-local/DFD.puml",
+    "sha256": "87c30fc4b05f9d1ba97f2e68303f19230f4359c11e565a43912e6de041994cba"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/FamilyA/DFD_Level_1.puml",
+    "copy": "familyA-L1-local/DFD_Level_1.puml",
+    "sha256": "453a31dd568bec981712af0d12578be359c78bba6e9ae606814d9b4af6187a10"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/FamilyA/DFD_Level_0.puml",
+    "copy": "familyA-L1-local/DFD_Level_0.puml",
+    "sha256": "e86be738477d49e205ab7e59628f7fffa81e1ab9ff82ade7dbbc93bc2d50142b"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/DFD.puml",
+    "copy": "root-L0-actual/DFD.puml",
+    "sha256": "7ac08dd9b694c47dfc226c328021c2a8606f38253b15e519f0f41a60e6618e4a"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/DFD_Level_1.puml",
+    "copy": "root-L0-actual/DFD_Level_1.puml",
+    "sha256": "7db702649ed1fbd5ba34af7b4fffaedee73d59e3c93b5f8973dbb9ff8da03bcd"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/DFD_Level_0.puml",
+    "copy": "root-L0-actual/DFD_Level_0.puml",
+    "sha256": "9b835430174ed484f148544c25a060f7b38b10ca8a55529bd3e7c9a98d33ad77"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/DFD.puml",
+    "copy": "root-L1-actual/DFD.puml",
+    "sha256": "7ac08dd9b694c47dfc226c328021c2a8606f38253b15e519f0f41a60e6618e4a"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/DFD_Level_1.puml",
+    "copy": "root-L1-actual/DFD_Level_1.puml",
+    "sha256": "7db702649ed1fbd5ba34af7b4fffaedee73d59e3c93b5f8973dbb9ff8da03bcd"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/DFD_Level_0.puml",
+    "copy": "root-L1-actual/DFD_Level_0.puml",
+    "sha256": "9b835430174ed484f148544c25a060f7b38b10ca8a55529bd3e7c9a98d33ad77"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/plantuml-dfd/DFD_Level_2.puml",
+    "copy": "plantuml-dfd-L0-actual/DFD_Level_2.puml",
+    "sha256": "cd14c9fe8eb635f5db876577e7ea402fa435e15cb2f4274463f226bcd57840ad"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/plantuml-dfd/DFD.puml",
+    "copy": "plantuml-dfd-L0-actual/DFD.puml",
+    "sha256": "7bd5a0c8c9f53e58b6b390525594d31d27c399709fa341e7058c122221b00cc9"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/plantuml-dfd/DFD_Level_1.puml",
+    "copy": "plantuml-dfd-L0-actual/DFD_Level_1.puml",
+    "sha256": "a5227d5167bda34c7f0bb3b1a0f36d5262d228318ef5259c1ee173342e716a50"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/plantuml-dfd/DFD_Level_0.puml",
+    "copy": "plantuml-dfd-L0-actual/DFD_Level_0.puml",
+    "sha256": "e28d60b31188e9594ad03d3c8f5db7a53dc838f5fec2b5bf87778891eb493ec3"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/plantuml-dfd/DFD_Level_2.puml",
+    "copy": "plantuml-dfd-L1-actual/DFD_Level_2.puml",
+    "sha256": "cd14c9fe8eb635f5db876577e7ea402fa435e15cb2f4274463f226bcd57840ad"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/plantuml-dfd/DFD.puml",
+    "copy": "plantuml-dfd-L1-actual/DFD.puml",
+    "sha256": "7bd5a0c8c9f53e58b6b390525594d31d27c399709fa341e7058c122221b00cc9"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/plantuml-dfd/DFD_Level_1.puml",
+    "copy": "plantuml-dfd-L1-actual/DFD_Level_1.puml",
+    "sha256": "a5227d5167bda34c7f0bb3b1a0f36d5262d228318ef5259c1ee173342e716a50"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/plantuml-dfd/DFD_Level_0.puml",
+    "copy": "plantuml-dfd-L1-actual/DFD_Level_0.puml",
+    "sha256": "e28d60b31188e9594ad03d3c8f5db7a53dc838f5fec2b5bf87778891eb493ec3"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/DFD-PlantUML/DFD.puml",
+    "copy": "official-main-L0-actual/DFD.puml",
+    "sha256": "8ffb23af43075b0ab51b2f38b9a3a802bf827315b130c69f228be9626b111bca"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/DFD-PlantUML/DFD_Level_1.puml",
+    "copy": "official-main-L0-actual/DFD_Level_1.puml",
+    "sha256": "5af17bd32dd65d3a2409c0bba182e2d2e84da7b15970387e04258ce5d362c712"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/DFD-PlantUML/DFD_Level_0.puml",
+    "copy": "official-main-L0-actual/DFD_Level_0.puml",
+    "sha256": "f7c21fde41f48ea9c403cf3fc496ab3ba2380140f38089a14726be4c36d5f104"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/DFD-PlantUML/DFD.puml",
+    "copy": "official-main-L0-local/DFD.puml",
+    "sha256": "8ffb23af43075b0ab51b2f38b9a3a802bf827315b130c69f228be9626b111bca"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/DFD-PlantUML/DFD_Level_1.puml",
+    "copy": "official-main-L0-local/DFD_Level_1.puml",
+    "sha256": "5af17bd32dd65d3a2409c0bba182e2d2e84da7b15970387e04258ce5d362c712"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/DFD-PlantUML/DFD_Level_0.puml",
+    "copy": "official-main-L0-local/DFD_Level_0.puml",
+    "sha256": "f7c21fde41f48ea9c403cf3fc496ab3ba2380140f38089a14726be4c36d5f104"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/DFD-PlantUML/DFD.puml",
+    "copy": "official-main-L1-actual/DFD.puml",
+    "sha256": "8ffb23af43075b0ab51b2f38b9a3a802bf827315b130c69f228be9626b111bca"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/DFD-PlantUML/DFD_Level_1.puml",
+    "copy": "official-main-L1-actual/DFD_Level_1.puml",
+    "sha256": "5af17bd32dd65d3a2409c0bba182e2d2e84da7b15970387e04258ce5d362c712"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/DFD-PlantUML/DFD_Level_0.puml",
+    "copy": "official-main-L1-actual/DFD_Level_0.puml",
+    "sha256": "f7c21fde41f48ea9c403cf3fc496ab3ba2380140f38089a14726be4c36d5f104"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/DFD-PlantUML/DFD.puml",
+    "copy": "official-main-L1-local/DFD.puml",
+    "sha256": "8ffb23af43075b0ab51b2f38b9a3a802bf827315b130c69f228be9626b111bca"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/DFD-PlantUML/DFD_Level_1.puml",
+    "copy": "official-main-L1-local/DFD_Level_1.puml",
+    "sha256": "5af17bd32dd65d3a2409c0bba182e2d2e84da7b15970387e04258ce5d362c712"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/DFD-PlantUML/DFD_Level_0.puml",
+    "copy": "official-main-L1-local/DFD_Level_0.puml",
+    "sha256": "f7c21fde41f48ea9c403cf3fc496ab3ba2380140f38089a14726be4c36d5f104"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD.puml",
+    "copy": "test-main-L0-actual/DFD.puml",
+    "sha256": "c4f766ccff531ceabae6962413903c976a3d880cc3b9e63885effb0420ffb789"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD_Level_1.puml",
+    "copy": "test-main-L0-actual/DFD_Level_1.puml",
+    "sha256": "c4b301f3a8ce3f7953377d32f3a8964a9bf8e6aaca5d703d1f054989ce695692"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD_Level_0.puml",
+    "copy": "test-main-L0-actual/DFD_Level_0.puml",
+    "sha256": "43ab251aaad7fa437b4d85f47907d6d94d2008ffab112c17bc7c0dae180fb0c2"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD.puml",
+    "copy": "test-main-L0-local/DFD.puml",
+    "sha256": "c4f766ccff531ceabae6962413903c976a3d880cc3b9e63885effb0420ffb789"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD_Level_1.puml",
+    "copy": "test-main-L0-local/DFD_Level_1.puml",
+    "sha256": "c4b301f3a8ce3f7953377d32f3a8964a9bf8e6aaca5d703d1f054989ce695692"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD_Level_0.puml",
+    "copy": "test-main-L0-local/DFD_Level_0.puml",
+    "sha256": "43ab251aaad7fa437b4d85f47907d6d94d2008ffab112c17bc7c0dae180fb0c2"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD.puml",
+    "copy": "test-main-L1-actual/DFD.puml",
+    "sha256": "c4f766ccff531ceabae6962413903c976a3d880cc3b9e63885effb0420ffb789"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD_Level_1.puml",
+    "copy": "test-main-L1-actual/DFD_Level_1.puml",
+    "sha256": "c4b301f3a8ce3f7953377d32f3a8964a9bf8e6aaca5d703d1f054989ce695692"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD_Level_0.puml",
+    "copy": "test-main-L1-actual/DFD_Level_0.puml",
+    "sha256": "43ab251aaad7fa437b4d85f47907d6d94d2008ffab112c17bc7c0dae180fb0c2"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD.puml",
+    "copy": "test-main-L1-local/DFD.puml",
+    "sha256": "c4f766ccff531ceabae6962413903c976a3d880cc3b9e63885effb0420ffb789"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD_Level_1.puml",
+    "copy": "test-main-L1-local/DFD_Level_1.puml",
+    "sha256": "c4b301f3a8ce3f7953377d32f3a8964a9bf8e6aaca5d703d1f054989ce695692"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD_Level_0.puml",
+    "copy": "test-main-L1-local/DFD_Level_0.puml",
+    "sha256": "43ab251aaad7fa437b4d85f47907d6d94d2008ffab112c17bc7c0dae180fb0c2"
+  },
+  {
+    "source": "origin/develop:DFD.puml",
+    "copy": "develop-L0-actual/DFD.puml",
+    "sha256": "9ab5a5e634d14d6928ec66566548d10cff59e889d44cc0f6f64c56de5d2f38b4"
+  },
+  {
+    "source": "origin/develop:DFD_Level_0.puml",
+    "copy": "develop-L0-actual/DFD_Level_0.puml",
+    "sha256": "4c040724a6df54e92728e14d525097b06d5cc67341cfff61c2e95b365fd53059"
+  },
+  {
+    "source": "origin/develop:DFD_Level_1.puml",
+    "copy": "develop-L0-actual/DFD_Level_1.puml",
+    "sha256": "a13bc42a1f5657f882db5b675cbc0ee593d0a50f41dd912dfaabc85e7c1ad46f"
+  },
+  {
+    "source": "origin/develop:DFD.puml",
+    "copy": "develop-L1-actual/DFD.puml",
+    "sha256": "9ab5a5e634d14d6928ec66566548d10cff59e889d44cc0f6f64c56de5d2f38b4"
+  },
+  {
+    "source": "origin/develop:DFD_Level_0.puml",
+    "copy": "develop-L1-actual/DFD_Level_0.puml",
+    "sha256": "4c040724a6df54e92728e14d525097b06d5cc67341cfff61c2e95b365fd53059"
+  },
+  {
+    "source": "origin/develop:DFD_Level_1.puml",
+    "copy": "develop-L1-actual/DFD_Level_1.puml",
+    "sha256": "a13bc42a1f5657f882db5b675cbc0ee593d0a50f41dd912dfaabc85e7c1ad46f"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/notation_experiments/DFD_Level0.puml",
+    "copy": "notation-L0-standalone/case.puml",
+    "sha256": "996ede365059df7d209fbf697750780ea8ce98e1aba88e58a2a5578c58cb42da"
+  },
+  {
+    "source": "/Users/armanavanesyan/oss/experiments/dfd-plantuml-lab/notation_experiments/DFD_Level1.puml",
+    "copy": "notation-L1-standalone/case.puml",
+    "sha256": "7ec2b33bbe49d25d60b1cc4d56944725e21a287346c11261f317b2cf25ec0db9"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD.puml",
+    "copy": "test-md-1-local/DFD.puml",
+    "sha256": "c4f766ccff531ceabae6962413903c976a3d880cc3b9e63885effb0420ffb789"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD_Level_0.puml",
+    "copy": "test-md-1-local/DFD_Level_0.puml",
+    "sha256": "43ab251aaad7fa437b4d85f47907d6d94d2008ffab112c17bc7c0dae180fb0c2"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD.puml",
+    "copy": "test-md-2-local/DFD.puml",
+    "sha256": "c4f766ccff531ceabae6962413903c976a3d880cc3b9e63885effb0420ffb789"
+  },
+  {
+    "source": "/tmp/dfd-review-20261018/test/DFD_Level_0.puml",
+    "copy": "test-md-2-local/DFD_Level_0.puml",
+    "sha256": "43ab251aaad7fa437b4d85f47907d6d94d2008ffab112c17bc7c0dae180fb0c2"
+  }
+]
