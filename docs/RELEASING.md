@@ -48,12 +48,24 @@ Rebuilding an unchanged source tree with the same source revision must yield the
 
 ## Final review and later publication
 
-Review the [Unreleased changelog](../CHANGELOG.md), [migration guide](MIGRATION.md), and [baseline provenance](https://github.com/ArmanAvanesyan/DFD-PlantUML/blob/main/docs/BASELINE.md). Confirm the supported API, remote installation requirement, line-break behavior, experimental exclusions, and renderer limitations are documented. Keep the existing historical `v0.1.0` tag unchanged: its library files are empty, so the usable pre-consolidation `main` commit is the compatibility reference.
+Review the [Unreleased changelog](../CHANGELOG.md), [draft release notes](RELEASE_NOTES.md), [migration guide](MIGRATION.md), and [baseline provenance](https://github.com/ArmanAvanesyan/DFD-PlantUML/blob/main/docs/BASELINE.md). Confirm the supported API, remote installation requirement, line-break behavior, experimental exclusions, and renderer limitations are documented. Keep the existing historical `v0.1.0` tag unchanged: its library files are empty, so the usable pre-consolidation `main` commit is the compatibility reference.
 
-Record the accepted candidate SHA, toolchain versions, check results, visual review, archive hash, and compatibility notes in the PR. Select the next version only after that review; Merge changes through review without automatic tagging or publication.
+Record the accepted candidate SHA, toolchain versions, check results, visual review, archive hash, and compatibility notes in the PR. Select the next version only after that review; merge changes through review without automatic tagging or publication.
 
 Only after separate authorization to publish should a maintainer choose the final release version, ensure the accepted source commit is on the official default branch, create its immutable tag, and publish the verified archive, checksums, and reviewed release notes. Any source change after acceptance requires a new candidate gate. This document deliberately provides no command that creates a tag or release.
 
 ## Preview stdlib preparation
 
 Run the deterministic export/check commands and actual candidate-JAR integration in [stdlib status](STDLIB.md) against the accepted committed candidate. Keep the export manifest, upstream source pins, compiler/runtime identities, generated resource hashes, JAR hash, and offline local/bundled parity evidence. Review representative SVG/PNG output. Candidate evidence does not establish support in an official PlantUML release and does not authorize submission or publication.
+
+## Candidate evidence handoff
+
+ArmanAvanesyan maintains the official library and reviews updates and future submission metadata. The release-readiness PR should identify one full committed source SHA for the following evidence:
+
+- Unit/integrity, documentation-link, baseline/current offline, and commit-pinned remote checks, with commands and results.
+- Deterministic archive, companion checksum, internal manifest, and successful extracted-archive rendering on both toolchains.
+- Export manifest, pinned encoder/PlantUML revisions, build commands and logs, generated resource hashes, and candidate JAR hash.
+- Offline bundled/local comparisons, expected negative diagnostics, artifact hashes, and a recorded visual review of representative SVG/PNG outputs.
+- The locally prepared contribution patch, its pinned upstream base, and metadata values still awaiting review.
+
+Copy accepted evidence out of temporary CI storage before its retention period expires; the candidate integration workflow retains artifacts for 14 days. Keep the archive and its checksum together and retain the manifest, provenance, logs, and validation outputs with them. A workflow success alone is not the evidence bundle. If the PR is merged into a different commit, record that relationship and rerun the final candidate gate against the resulting `main` SHA before any later publication decision.

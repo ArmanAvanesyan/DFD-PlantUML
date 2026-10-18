@@ -1,6 +1,7 @@
 """Integration gates must reject stale/mismatched resources and unsafe routing."""
 import hashlib
 import importlib.util
+import json
 import sys
 import tempfile
 from types import SimpleNamespace
@@ -16,6 +17,22 @@ spec.loader.exec_module(integration)
 
 
 class IntegrationGuards(unittest.TestCase):
+    def test_validate_rejects_different_metadata_before_touching_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            evidence = root / 'validation'
+            evidence.mkdir()
+            marker = evidence / 'keep.txt'
+            marker.write_text('existing evidence')
+            for recorded, requested in ((None, 'submission.json'), ('submission.json', None),
+                                        ('submission.json', 'other.json')):
+                with self.subTest(recorded=recorded, requested=requested):
+                    (root / 'build-provenance.json').write_text(json.dumps({
+                        'source_revision': 'pinned-source', 'lock': {'pinned': True}, 'metadata': recorded}))
+                    with self.assertRaisesRegex(ValueError, 'provenance does not match'):
+                        integration.validate(root, 'pinned-source', {'pinned': True}, 'image', {}, requested)
+                    self.assertEqual(marker.read_text(), 'existing evidence')
+
     def test_bundle_routes_all_profiles_and_core_without_network(self):
         source = '@startdot\n!include ../../DFD_Level_0.puml\n!include ../../DFD.puml\n@enddot\n'
         self.assertEqual(integration.bundled(source), '@startdot\n!include <dfd/DFD_Level_0>\n!include <dfd/DFD>\n@enddot\n')

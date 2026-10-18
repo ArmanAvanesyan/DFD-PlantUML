@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export and verify a deterministic preview stdlib contribution from committed inputs."""
+"""Export and verify a deterministic stdlib contribution from committed inputs."""
 import argparse
 import hashlib
 import json
@@ -26,17 +26,39 @@ def git(repo, *args):
     return subprocess.check_output(['git', *args], cwd=repo, stderr=subprocess.PIPE)
 
 
+def committed_file(repo, commit, name):
+    if not isinstance(name, str) or not name or name.startswith('/') or '\\' in name or any(part in ('', '.', '..') for part in name.split('/')):
+        raise ValueError('Expected a repository-relative committed input path')
+    tree = git(repo, 'ls-tree', '-z', commit, '--', ':(literal)' + name).split(b'\0')[0]
+    if not tree or tree.split(b' ', 1)[0] != b'100644':
+        raise ValueError('Missing or non-regular committed input: ' + name)
+    return git(repo, 'show', commit + ':' + name)
+
+
 def committed_inputs(repo, revision):
     commit = git(repo, 'rev-parse', '--verify', '--end-of-options', revision + '^{commit}').decode().strip()
     if not re.fullmatch('[0-9a-f]{40}', commit):
         raise ValueError('Expected a full SHA-1 commit')
     files = {}
     for name in INPUTS:
-        tree = git(repo, 'ls-tree', '-z', commit, '--', name).split(b'\0')[0]
-        if not tree or tree.split(b' ', 1)[0] != b'100644':
-            raise ValueError('Missing or non-regular committed input: ' + name)
-        files[name] = git(repo, 'show', commit + ':' + name)
+        files[name] = committed_file(repo, commit, name)
     return commit, files
+
+
+def submission_version(data):
+    def unique_fields(pairs):
+        fields = {}
+        for key, value in pairs:
+            if key in fields:
+                raise ValueError('Duplicate submission metadata field: ' + key)
+            fields[key] = value
+        return fields
+    fields = json.loads(data.decode('utf-8'), object_pairs_hook=unique_fields)
+    if not isinstance(fields, dict) or set(fields) != {'version'} or not isinstance(fields['version'], str):
+        raise ValueError('Submission metadata requires exactly one string version field')
+    if not re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', fields['version']):
+        raise ValueError('Submission metadata version must be stable SemVer MAJOR.MINOR.PATCH')
+    return fields['version']
 
 
 def validate_includes(name, content):
@@ -52,13 +74,22 @@ def validate_includes(name, content):
         raise ValueError('Remote include routing remains in ' + name)
 
 
-def build_export(repo, revision='HEAD'):
+def build_export(repo, revision='HEAD', metadata=None):
     commit, sources = committed_inputs(repo, revision)
+    version = 'unreleased'
+    metadata_info = {'mode': 'preview', 'version': version}
+    if metadata is not None:
+        metadata = str(metadata)
+        data = committed_file(repo, commit, metadata)
+        version = submission_version(data)
+        sources[metadata] = data
+        metadata_info = {'mode': 'submission-candidate', 'version': version,
+                         'source': metadata, 'sha256': digest(data)}
     license_text = sources['LICENSE'].decode('utf-8')
     if not license_text.startswith('MIT License\n'):
         raise ValueError('Expected committed MIT license')
-    header = ("' Exported preview; canonical sources remain in DFD-PlantUML.\n" +
-              ''.join("' " + line + '\n' for line in license_text.splitlines()) + '\n').encode()
+    header = ("' Exported candidate; canonical sources remain in DFD-PlantUML.\n" +
+              ''.join(("' " + line if line else "'") + '\n' for line in license_text.splitlines()) + '\n').encode()
     output = {}
     transforms = {}
     for name in LIBRARIES:
@@ -101,12 +132,18 @@ def build_export(repo, revision='HEAD'):
         raise ValueError('Missing or unexpected preview metadata')
     if fields['license'] != 'MIT' or fields['source'] != REPOSITORY or fields['origin'] != REPOSITORY:
         raise ValueError('Unexpected license or source metadata')
+    if metadata is not None:
+        if readme.count('\nversion: unreleased\n') != 1:
+            raise ValueError('Expected exactly one literal preview version field')
+        readme = readme.replace('\nversion: unreleased\n', '\nversion: ' + version + '\n', 1)
     output['dfd/README.md'] = readme.encode()
     transforms['dfd/README.md'] = ['substitute committed source SHA into preview metadata template']
+    if metadata is not None:
+        transforms['dfd/README.md'].append('substitute stable version from explicitly selected committed metadata')
     for name, data in output.items():
         if name.endswith('.puml'):
             validate_includes(name, data)
-    manifest = {'schema': 1, 'source_repository': REPOSITORY, 'source_commit': commit,
+    manifest = {'schema': 1, 'source_repository': REPOSITORY, 'source_commit': commit, 'metadata': metadata_info,
                 'inputs': {name: digest(data) for name, data in sorted(sources.items())},
                 'files': {name: {'sha256': digest(data), 'transformations': transforms[name]} for name, data in sorted(output.items())}}
     output['MANIFEST.json'] = (json.dumps(manifest, sort_keys=True, indent=2) + '\n').encode()
@@ -145,9 +182,9 @@ def write_export(files, output):
         path.write_bytes(content)
 
 
-def check_export(repo, revision, output):
-    files = build_export(repo, revision)
-    if files != build_export(repo, revision):
+def check_export(repo, revision, output, metadata=None):
+    files = build_export(repo, revision, metadata)
+    if files != build_export(repo, revision, metadata):
         raise ValueError('Export is not reproducible')
     if inspect_output(output) != files:
         raise ValueError('Export is missing, stale, modified, or contains unexpected files')
@@ -160,13 +197,14 @@ def main():
     for name in ('export', 'check'):
         command = sub.add_parser(name)
         command.add_argument('--revision', default='HEAD')
+        command.add_argument('--metadata', help='Repository-relative JSON file from --revision containing exactly a stable version field')
         command.add_argument('--output', type=Path, default=Path('build/stdlib'))
     args = parser.parse_args()
     if args.command == 'export':
-        files = build_export(ROOT, args.revision)
+        files = build_export(ROOT, args.revision, args.metadata)
         write_export(files, args.output)
     else:
-        files = check_export(ROOT, args.revision, args.output)
+        files = check_export(ROOT, args.revision, args.output, args.metadata)
     print(f'{args.command}: {len(files) - 1} contribution files; manifest: {args.output / "MANIFEST.json"}')
     return 0
 
