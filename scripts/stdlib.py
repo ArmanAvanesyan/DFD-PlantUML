@@ -89,7 +89,7 @@ def build_export(repo, revision='HEAD', metadata=None):
     if not license_text.startswith('MIT License\n'):
         raise ValueError('Expected committed MIT license')
     header = ("' Exported candidate; canonical sources remain in DFD-PlantUML.\n" +
-              ''.join("' " + line + '\n' for line in license_text.splitlines()) + '\n').encode()
+              ''.join(("' " + line if line else "'") + '\n' for line in license_text.splitlines()) + '\n').encode()
     output = {}
     transforms = {}
     for name in LIBRARIES:

@@ -78,12 +78,12 @@ def prepare(repo, revision, upstream, output, metadata=None):
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 dest.write_bytes(data)
         git(root, 'add', '.')
-        patch = git(root, '-c', 'core.quotePath=false', 'diff', '--cached', '--binary', tree, '--', '.')
+        patch = git(root, '-c', 'core.quotePath=false', 'diff', '--cached', '--binary', '--no-color', '--no-ext-diff', '--no-textconv', tree, '--', '.')
     output.mkdir(parents=True, exist_ok=True)
     patch_path = output / 'contribution.patch'
     patch_path.write_bytes(patch)
     # Check against the genuine checkout, without changing it or its index.
-    git(upstream, 'apply', '--check', str(patch_path))
+    git(upstream, 'apply', '--check', '--whitespace=error', str(patch_path))
     payload = {'README.md': updated, **{'stdlib/' + n: data for n, data in files.items() if n.startswith('dfd/')}}
     manifest = {'source_commit': commit, 'stdlib_revision': base, 'submission_status': 'local-review-only',
                 'preparer_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
