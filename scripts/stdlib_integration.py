@@ -86,10 +86,10 @@ def docker(image, lock, out, args, *, online=False, build=False, candidate=None)
             *mounts, '-w', '/work', '--entrypoint', 'sh', image, *args]
 
 
-def build(out, revision, lock, image, runtime, builder):
+def build(out, revision, lock, image, runtime, builder, metadata=None):
     logs = out / 'logs'
     run([sys.executable, str(ROOT / 'scripts/stdlib.py'), 'export', '--revision', revision,
-         '--output', str(out / 'export')], logs / 'export.log')
+         '--output', str(out / 'export'), *(['--metadata', metadata] if metadata else [])], logs / 'export.log')
     export = out / 'export'
     for key in ['stdlib', 'plantuml']:
         checkout(lock[key], out / 'sources' / key, logs)
@@ -122,7 +122,7 @@ def build(out, revision, lock, image, runtime, builder):
     shutil.copyfile(jars[0], out / 'candidate.jar')
     resources_in_jar(out / 'candidate.jar', resources)
     write_json(out / 'build-provenance.json', {
-        'source_revision': revision, 'lock': lock, 'runtime': dict(runtime, prepared_image=image, builder_image=builder),
+        'source_revision': revision, 'metadata': metadata, 'lock': lock, 'runtime': dict(runtime, prepared_image=image, builder_image=builder),
         'export_files': {p.relative_to(export).as_posix(): digest(p) for p in sorted(export.rglob('*')) if p.is_file()},
         'resources': resources, 'unchanged_stdlib_resources': {name: value for name, value in before.items() if name not in resources}, 'jar_sha256': digest(out / 'candidate.jar'),
         'commands': {'encoder': lock['encoder_command'], 'jar': lock['jar_command']},
@@ -213,9 +213,9 @@ def rejection(proc, paths, expected, name):
     return matched and (proc.returncode != 0 or any(inspect_svg(p) for p in paths))
 
 
-def validate(out, revision, lock, image, runtime):
+def validate(out, revision, lock, image, runtime, metadata=None):
     provenance = json.loads((out / 'build-provenance.json').read_text())
-    if provenance['source_revision'] != revision or provenance['lock'] != lock:
+    if provenance['source_revision'] != revision or provenance['lock'] != lock or provenance.get('metadata') != metadata:
         raise ValueError('Candidate provenance does not match requested inputs')
     if digest(out / 'candidate.jar') != provenance['jar_sha256']:
         raise ValueError('Candidate JAR hash mismatch')
@@ -369,6 +369,7 @@ def prepare_builder(out, image, lock, runtime):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--revision', default='HEAD')
+    parser.add_argument('--metadata', help='Optional version JSON path in the selected committed revision')
     parser.add_argument('--output', type=Path, default=ROOT / 'build/stdlib-integration')
     parser.add_argument('--validate-only', action='store_true')
     args = parser.parse_args()
@@ -382,8 +383,8 @@ def main():
     image = prepare(runtime)
     if not args.validate_only:
         builder = prepare_builder(out, image, lock, runtime)
-        build(out, revision, lock, image, runtime, builder)
-    validate(out, revision, lock, image, runtime)
+        build(out, revision, lock, image, runtime, builder, args.metadata)
+    validate(out, revision, lock, image, runtime, args.metadata)
 
 
 if __name__ == '__main__':

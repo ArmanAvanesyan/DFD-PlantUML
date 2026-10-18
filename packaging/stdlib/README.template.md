@@ -10,10 +10,12 @@ source: https://github.com/ArmanAvanesyan/DFD-PlantUML
 origin: https://github.com/ArmanAvanesyan/DFD-PlantUML
 ---
 
-# DFD-PlantUML preview contribution
+# DFD-PlantUML candidate contribution
 
 This generated candidate is not included in an official PlantUML release.
-The preview version and release metadata require review before submission.
+The default `unreleased` metadata requires review before submission. Explicitly
+selected candidate metadata records a review choice; it is not proof of
+publication, upstream acceptance, or inclusion in a shipped PlantUML release.
 Canonical sources and update instructions are maintained in the source repository.
 Regenerate this directory from the committed source; do not edit exported files.
 

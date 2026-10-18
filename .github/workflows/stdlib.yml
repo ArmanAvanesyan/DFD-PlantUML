@@ -1,5 +1,7 @@
 name: Candidate stdlib integration
 on:
+  push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -32,6 +34,10 @@ jobs:
             stdlib-gradle-${{ runner.os }}-${{ hashFiles('scripts/stdlib-lock.json', 'scripts/toolchain-current.json', 'scripts/Dockerfile', 'scripts/stdlib-integration/Dockerfile') }}-
       - name: Build actual candidate JAR and render offline
         run: python3 -u scripts/stdlib_integration.py --revision HEAD
+      - name: Prepare local contribution review patch
+        run: |
+          git clone --no-hardlinks build/stdlib-integration/sources/stdlib build/stdlib-patch-upstream
+          python3 scripts/stdlib_patch.py --revision HEAD --upstream build/stdlib-patch-upstream --output build/stdlib-submission
       - name: Retain integration evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -43,4 +49,5 @@ jobs:
             build/stdlib-integration/candidate.jar
             build/stdlib-integration/build-provenance.json
             build/stdlib-integration/validation/
+            build/stdlib-submission/
           retention-days: 14

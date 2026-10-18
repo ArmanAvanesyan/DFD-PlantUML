@@ -65,6 +65,73 @@ class StdlibExportTests(unittest.TestCase):
         self.assertNotEqual(original, stdlib.build_export(self.root))
         self.assertEqual(original, stdlib.build_export(self.root, old))
 
+    def write_metadata(self, content='{"version": "99.0.0"}\n'):
+        name = 'packaging/stdlib/submission.json'
+        (self.root / name).write_text(content)
+        return name
+
+    def test_explicit_committed_submission_metadata(self):
+        name = self.write_metadata()
+        commit = self.commit()
+        files = stdlib.build_export(self.root, metadata=name)
+        self.assertEqual(files, stdlib.build_export(self.root, metadata=name))
+        self.assertIn(b'version: 99.0.0\n', files['dfd/README.md'])
+        self.assertIn((stdlib.REPOSITORY + '/tree/' + commit).encode(), files['dfd/README.md'])
+        manifest = json.loads(files['MANIFEST.json'])
+        self.assertEqual(manifest['metadata'], {'mode': 'submission-candidate', 'version': '99.0.0',
+                                               'source': name, 'sha256': stdlib.digest((self.root / name).read_bytes())})
+        self.assertIn(name, manifest['inputs'])
+        self.assertNotIn('dfd/submission.json', files)
+        stdlib.write_export(files, self.output)
+        self.assertEqual(files, stdlib.check_export(self.root, 'HEAD', self.output, metadata=name))
+        with self.assertRaisesRegex(ValueError, 'stale'):
+            stdlib.check_export(self.root, 'HEAD', self.output)
+        self.assertIn(b'version: unreleased\n', stdlib.build_export(self.root)['dfd/README.md'])
+
+    def test_submission_metadata_ignores_working_tree_and_respects_revision(self):
+        name = self.write_metadata()
+        with self.assertRaisesRegex(ValueError, 'Missing or non-regular'):
+            stdlib.build_export(self.root, metadata=name)
+        commit = self.commit()
+        original = stdlib.build_export(self.root, metadata=name)
+        self.write_metadata('{"version": "98.0.0"}')
+        self.assertEqual(original, stdlib.build_export(self.root, metadata=name))
+        self.commit()
+        self.assertNotEqual(original, stdlib.build_export(self.root, metadata=name))
+        self.assertEqual(original, stdlib.build_export(self.root, commit, metadata=name))
+
+    def test_submission_metadata_rejects_malformed_or_unsafe_values(self):
+        malformed = ('{', '[]', 'null', '{}', '{"version": 1}',
+                     '{"version":"1.0.0","release":"override"}',
+                     '{"version":"1.0.0","version":"2.0.0"}')
+        versions = ('unreleased', 'v1.0.0', '01.0.0', '1.0', '1.0.0-rc.1', '1.0.0+build', '1.0.0\ninclude')
+        for value in (*malformed, *(json.dumps({'version': version}) for version in versions)):
+            with self.subTest(value=value):
+                name = self.write_metadata(value)
+                self.commit()
+                with self.assertRaises(ValueError):
+                    stdlib.build_export(self.root, metadata=name)
+
+    def test_submission_metadata_requires_regular_committed_relative_path(self):
+        for name in ('missing.json', '../metadata.json', '/tmp/metadata.json', './LICENSE', 'packaging//metadata.json'):
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                stdlib.build_export(self.root, metadata=name)
+        name = self.write_metadata()
+        path = self.root / name
+        path.unlink()
+        path.symlink_to('../../LICENSE')
+        self.commit()
+        with self.assertRaisesRegex(ValueError, 'non-regular'):
+            stdlib.build_export(self.root, metadata=name)
+
+    def test_submission_metadata_cannot_bypass_preview_template_contract(self):
+        name = self.write_metadata()
+        template = self.root / stdlib.TEMPLATE
+        template.write_text(template.read_text().replace('version: unreleased', 'version: 99.0.0'))
+        self.commit()
+        with self.assertRaisesRegex(ValueError, 'preview metadata'):
+            stdlib.build_export(self.root, metadata=name)
+
     def test_only_approved_include_transformations(self):
         files = stdlib.build_export(self.root)
         for name in stdlib.LIBRARIES:

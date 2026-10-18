@@ -17,6 +17,8 @@ Bundled profiles resolve `<dfd/DFD>` and examples resolve the corresponding prof
 
 Preview metadata uses `version: unreleased` and a source commit permalink as `release`. These are candidate review values, not a release number or published release. The metadata template is maintained upstream; generated files are ignored and must not be edited manually. The manifest remains outside the contribution so it cannot become an unintended bundled resource.
 
+The optional `--metadata PATH` argument accepts a repository-relative JSON file committed in the selected revision. Its object must contain exactly one field, `version`, whose string value is stable SemVer `MAJOR.MINOR.PATCH`; duplicate keys, extra fields, prerelease labels, and build suffixes are rejected. The default remains `unreleased`; this work selects no release number and adds no version-selection file. Export/check must use the same metadata path. Selecting metadata neither creates a tag/release nor proves upstream acceptance or shipping. Review the version separately before a future submission.
+
 ## Actual candidate-JAR integration
 
 Requires Python 3.10+, Git, Docker, and network access for initial source/toolchain/Gradle dependency retrieval. From a checkout run:
@@ -33,7 +35,7 @@ Bundled rendering mounts only its fixtures, the candidate JAR, and harness scrip
 
 DOT comparison ignores only empty lines outside quoted strings, which can be introduced by packaging headers; all other bytes, including quoted line breaks, remain significant. Evidence retains both raw and normalized DOT.
 
-Evidence includes `candidate.jar`, `build-provenance.json`, full build logs, staged fixtures, expanded DOT, SVG/PNG, expected diagnostics, and artifact hashes. The `Candidate stdlib integration` workflow runs on PRs and manual dispatch, with read-only repository permissions, content-keyed dependency caches, and evidence retained on failure. It never submits or publishes anything.
+Evidence includes `candidate.jar`, `build-provenance.json`, full build logs, staged fixtures, expanded DOT, SVG/PNG, expected diagnostics, and artifact hashes. The `Candidate stdlib integration` workflow runs on pushes to `main`, PRs, and manual dispatch, with read-only repository permissions, content-keyed dependency caches, and evidence retained on failure. It also prepares and uploads the local review patch under `build/stdlib-submission/`. It never submits or publishes anything.
 
 To rerun validation without rebuilding, use the exact source revision recorded in the existing provenance:
 
@@ -43,8 +45,26 @@ python3 -u scripts/stdlib_integration.py --revision FULL_SOURCE_SHA --validate-o
 
 A new source revision requires a new empty output directory, for example `--output build/stdlib-integration-next`; stale exported content is rejected. Generated checkouts may be recreated inside that selected build directory. The baseline engine remains covered for local/remote compatibility; this candidate gate targets the current SPM-based engine and does not retrofit SPM resources into the baseline's older packaging format.
 
+When reviewing an explicitly selected candidate version, pass the same committed `--metadata PATH` to integration as to export/check. Build provenance records that selection, and `--validate-only` rejects a different selection from the one used to build the candidate JAR.
+
 A passing candidate build proves local integration only. Later statuses are separate: accepted upstream, then shipped in a named official PlantUML release. Record the source commit, export hashes, encoder revision, engine revision, and shipping release independently; a directory name or metadata UID is not source provenance.
 
 ## Update and submission boundaries
 
 No stdlib contribution is submitted by exporting or checking the candidate JAR. A future maintainer review must settle metadata/version values, inspect rendered evidence, authorize submission, and record the eventual shipped release. Tags and releases require separate authorization. See [release preparation](RELEASING.md).
+
+ArmanAvanesyan owns upstream library maintenance and the proposed contribution's update process. For each update, first commit canonical library, example, documentation, and metadata changes in this repository. Re-export from that exact SHA into a fresh directory, run export/check, and rebuild the candidate JAR with the locked upstream sources. Review API compatibility, export transformations, resource hashes, offline renders, and the candidate evidence before preparing any upstream patch. Update a previously accepted contribution by regeneration from reviewed source, rather than editing its derived files independently.
+
+## Local contribution patch review
+
+The local patch preparer combines the generated contribution with a root-catalog README description and executable example, as required by the pinned upstream contribution guide. It reads the DFD payload from a committed source revision and a supplied clean stdlib checkout at the locked encoder revision:
+
+```sh
+python3 scripts/stdlib_patch.py --revision HEAD --upstream /path/to/plantuml-stdlib --output build/stdlib-submission
+```
+
+It writes `contribution.patch` and adjacent review metadata/evidence under the selected output directory. Generated manifests and review evidence remain outside `stdlib/dfd/`; encoded SPM resources are not contribution files. The patch is a local review artifact and is not applied to, pushed to, or submitted upstream by this command. Inspect both the contribution files and the root README addition, and check that the patch applies to its recorded upstream base before requesting any later submission authorization.
+
+Default metadata remains preview-only and requires review. Once a future version is explicitly approved, commit its metadata JSON and pass the same `--metadata` choice to export/check and patch preparation. A metadata change requires a fresh manifest and validation evidence for that committed revision; do not hand-edit the generated patch to bypass exporter checks.
+
+Track three distinct statuses: a passing local candidate proves packaging and rendering; upstream acceptance requires an upstream review/merge; shipping requires identifying an official PlantUML release that actually contains the resources. Record these events and their revisions independently. None follows automatically from generating the patch, a version string, or a successful candidate build.

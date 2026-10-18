@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PREFIX = 'dfd-plantuml'
 FIXED = ('DFD.puml', 'DFD_Level_0.puml', 'DFD_Level_1.puml', 'LICENSE',
          'README.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'docs/MIGRATION.md',
-         'docs/RELEASING.md', 'docs/INSTALLATION.md', 'docs/API.md',
+         'docs/RELEASING.md', 'docs/RELEASE_NOTES.md', 'docs/INSTALLATION.md', 'docs/API.md',
          'docs/COMPATIBILITY.md', 'docs/ARCHITECTURE.md', 'docs/STDLIB.md', 'docs/rendered/level_0.svg',
          'docs/rendered/level_1.svg', 'docs/rendered/customization.svg')
 
