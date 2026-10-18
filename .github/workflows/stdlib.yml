@@ -24,7 +24,9 @@ jobs:
         run: echo "hash=$(sha256sum build/stdlib/MANIFEST.json | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
       - uses: actions/cache@v4
         with:
-          path: build/stdlib-gradle-cache
+          path: |
+            build/stdlib-gradle-cache/caches
+            build/stdlib-gradle-cache/wrapper
           key: stdlib-gradle-${{ runner.os }}-${{ hashFiles('scripts/stdlib-lock.json', 'scripts/toolchain-current.json', 'scripts/Dockerfile', 'scripts/stdlib-integration/Dockerfile') }}-${{ steps.export.outputs.hash }}
           restore-keys: |
             stdlib-gradle-${{ runner.os }}-${{ hashFiles('scripts/stdlib-lock.json', 'scripts/toolchain-current.json', 'scripts/Dockerfile', 'scripts/stdlib-integration/Dockerfile') }}-
