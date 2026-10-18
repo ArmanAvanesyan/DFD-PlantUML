@@ -2,11 +2,20 @@
 
 **Proposed only.** Existing official PlantUML releases do not ship DFD-PlantUML. `<dfd/DFD_Level_0>` and `<dfd/DFD_Level_1>` are proposed bundled entrypoints, not working installation instructions for those releases. Use [local or commit-pinned remote installation](INSTALLATION.md) today.
 
-## Planned export
+## Reproducible preview export
 
-Keep the root core and two profiles authoritative. A deterministic exporter is planned to read a committed revision and emit an explicit allowlist: the three library files, contribution metadata, and selected Level 0, Level 1, and customization examples under `_examples_`. Only include routing and documented license headers may differ; macro bodies and signatures must remain compatible.
+The root core and two profiles remain authoritative. The exporter reads Git objects from a committed revision and emits an explicit allowlist: the three library files, contribution metadata, and Level 0, Level 1, and customization examples under `_examples_`. It ignores uncommitted source edits. Only include routing and committed MIT license comments differ; macro bodies and signatures are preserved.
 
-Bundled profiles will resolve `<dfd/DFD>`. Bundled examples will resolve the corresponding profile. Exported files must have no network-dependent includes. A manifest outside the contribution directory will record source revision, source/export hashes, and each transformation. Preview metadata will use `unreleased` and a source commit permalink; those are candidate values for review, not an assigned release.
+```sh
+python3 scripts/stdlib.py export --revision HEAD --output build/stdlib
+python3 scripts/stdlib.py check --revision HEAD --output build/stdlib
+```
+
+`build/stdlib/dfd/` is the generated contribution directory; the adjacent `MANIFEST.json` records the source commit, input/output hashes, and exact transformations. The check reconstructs the expected committed export, verifies reproducibility, and compares every output byte and path. Export/check reject unexpected or stale contents rather than deleting files. After changing the source revision, choose a new empty output directory (for example `build/stdlib-next`) or explicitly remove only your previous generated export before rerunning. Identical exports can be repeated in place.
+
+Bundled profiles resolve `<dfd/DFD>` and examples resolve the corresponding profile. The only allowed exported includes target the three DFD bundled files; local and remote fallbacks are rejected. The current encoder's raw GitHub URL restriction is checked before packaging. Source filenames and local/remote includes outside this derived export are unchanged.
+
+Preview metadata uses `version: unreleased` and a source commit permalink as `release`. These are candidate review values, not a release number or published release. The metadata template is maintained upstream; generated files are ignored and must not be edited manually. The manifest remains outside the contribution so it cannot become an unintended bundled resource.
 
 ## Planned integration proof
 
@@ -16,4 +25,4 @@ A passing candidate build proves local integration only. Later statuses are sepa
 
 ## Update and submission boundaries
 
-Export and candidate-JAR tooling will be documented when implemented. No stdlib contribution is submitted by documentation or candidate checks. A future maintainer review must settle metadata/version values, inspect rendered evidence, authorize submission, and record the eventual shipped release. Tags and releases require separate authorization. See [release preparation](RELEASING.md).
+The exporter prepares files only; actual-JAR integration is the separate planned gate above. No stdlib contribution is submitted by exporting or checking. A future maintainer review must settle metadata/version values, inspect rendered evidence, authorize submission, and record the eventual shipped release. Tags and releases require separate authorization. See [release preparation](RELEASING.md).

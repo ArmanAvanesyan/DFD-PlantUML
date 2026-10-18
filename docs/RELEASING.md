@@ -54,6 +54,6 @@ Record the accepted candidate SHA, toolchain versions, check results, visual rev
 
 Only after separate authorization to publish should a maintainer choose the final release version, ensure the accepted source commit is on the official default branch, create its immutable tag, and publish the verified archive, checksums, and reviewed release notes. Any source change after acceptance requires a new candidate gate. This document deliberately provides no command that creates a tag or release.
 
-## Proposed stdlib preparation
+## Preview stdlib preparation
 
-Bundled integration is currently proposed, not shipped. Before a future stdlib submission, require the deterministic export and actual candidate-JAR checks described in [stdlib status](STDLIB.md). Candidate evidence does not establish support in an official PlantUML release and does not authorize submission or publication.
+Run the deterministic export/check commands in [stdlib status](STDLIB.md) against the accepted committed candidate. Keep the adjacent provenance manifest. Actual candidate-JAR integration remains a separate required gate before any future stdlib submission. Candidate evidence does not establish support in an official PlantUML release and does not authorize submission or publication.
