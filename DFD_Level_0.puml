@@ -1,5 +1,10 @@
 ' Context diagram: published Level 0 API.
+' Local files resolve their sibling; remote callers supply the pinned directory.
+!ifdef $DFD_ROOT
+!include $DFD_ROOT/DFD.puml
+!else
 !include DFD.puml
+!endif
 !ifndef DFD_LEVEL_0_LOADED
 !define DFD_LEVEL_0_LOADED
 !global $DFD_LEVEL = 0

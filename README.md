@@ -6,7 +6,21 @@ The official PlantUML library for Level 0 context diagrams and Level 1 data-flow
 
 Download `DFD.puml`, `DFD_Level_0.puml`, and `DFD_Level_1.puml` from the same commit into one directory. Include the desired profile locally. No edits to its sibling include are needed. Choose one profile per diagram.
 
-For a remote include, use `https://raw.githubusercontent.com/ArmanAvanesyan/DFD-PlantUML/COMMIT_SHA/DFD_Level_0.puml` (or Level 1), replacing `COMMIT_SHA` with the full commit you installed. Relative includes resolve to that same commit's core. Using `main` is convenient for experiments but follows future changes. No PlantUML standard-library installation is assumed.
+For remote use, set `$DFD_ROOT` to the directory of one full source commit, then include its profile (replace `COMMIT_SHA`):
+
+```text
+@startuml
+!$DFD_ROOT = "https://raw.githubusercontent.com/ArmanAvanesyan/DFD-PlantUML/COMMIT_SHA"
+!includeurl $DFD_ROOT/DFD_Level_0.puml
+startDfd()
+External(User, "Customer")
+Process(System, "Loan System")
+Flow(User, System)
+endDfd()
+@enduml
+```
+
+Use `DFD_Level_1.puml` for Level 1. The profile loads `$DFD_ROOT/DFD.puml`, ensuring it uses the same commit. The pinned PlantUML engine does not infer a sibling URL from a remote include, so this explicit directory is required; local installs use sibling includes without configuration. Using `main` follows future changes. No PlantUML standard-library installation is assumed.
 
 ## Examples
 
@@ -109,7 +123,7 @@ Validation is off by default to retain permissive published behavior. When enabl
 
 Requires Python 3.10+ and Docker. Run `python3 scripts/check.py` from a checkout. The first run downloads the digest-pinned image in `scripts/toolchain.json`; subsequent runs render with `--network none`. The image pins Java 17.0.14+7, PlantUML 1.2025.2, and Graphviz 12.2.1 on linux/amd64, including on ARM hosts through Docker emulation. The harness removes the upstream image's unusable GD plugin in each transient container and suppresses Graphviz warnings with `-q`; Graphviz errors remain visible. This prevents warnings from being merged into SVG bytes.
 
-After pushing a commit, run `python3 scripts/check.py --remote-ref FULL_COMMIT_SHA` to render every documented example through commit-pinned raw GitHub includes. This mode needs network access. It verifies sibling remote resolution rather than downloading files and pretending they were remote includes.
+After pushing a commit, run `python3 scripts/check.py --remote-ref FULL_COMMIT_SHA` to render every documented example through commit-pinned raw GitHub includes. This mode needs network access. It verifies remote directory resolution with no local library files mounted, ruling out accidental local fallback.
 
 Results, logs, expanded DOT, and SVGs are saved under `build/`. CI uploads them even on failure. Tests reject missing/malformed SVGs, error diagrams, preprocessing failures, and Graphviz failures; expected validation failures require the specific diagnostic. See [baseline investigation](docs/BASELINE.md) for original source hashes and render evidence.
 

@@ -14,13 +14,16 @@ LOCK = json.loads((ROOT / 'scripts/toolchain.json').read_text())
 
 
 def docker(args, online=False, entrypoint=None):
+    mount = ROOT / 'build/remote' if online else ROOT
     command = ['docker', 'run', '--rm', '--platform', LOCK['platform'],
                '--network', 'bridge' if online else 'none',
                '-e', 'PLANTUML_SECURITY_PROFILE=UNSECURE' if online else 'PLANTUML_SECURITY_PROFILE=LEGACY',
-               '-v', f'{ROOT}:/work', '-w', '/work']
+               '-v', f'{mount}:/work', '-w', '/work']
+    if online:
+        command += ['-v', f'{ROOT / "scripts"}:/harness:ro']
     command += ['--entrypoint', entrypoint or 'sh']
     if not entrypoint:
-        args = ['/work/scripts/render.sh'] + args
+        args = ['/harness/render.sh' if online else '/work/scripts/render.sh'] + args
     return subprocess.run(command + [LOCK['image']] + args, text=True, capture_output=True, timeout=90)
 
 
@@ -110,14 +113,14 @@ endDfd()
     else:
         prefix = f'https://raw.githubusercontent.com/ArmanAvanesyan/DFD-PlantUML/{args.remote_ref}/'
         for path, _ in cases:
-            path.write_text(path.read_text().replace('!include ../../', '!includeurl ' + prefix))
+            path.write_text(path.read_text().replace('@startuml\n', '@startuml\n!$DFD_ROOT = ' + json.dumps(prefix.rstrip('/')) + '\n').replace('!include ../../', '!includeurl $DFD_ROOT/'))
     readme_blocks = re.findall(r"```plantuml\n(.*?)```", (ROOT / 'README.md').read_text(), re.S)
     example_blocks = [p.read_text() for p in sorted((ROOT / 'examples').glob('*.puml'))]
     if sorted(readme_blocks) != sorted(example_blocks):
         sys.exit('README examples differ from executable examples')
     results = []
     for path, expected in cases:
-        rel = path.relative_to(ROOT).as_posix()
+        rel = path.name if args.remote_ref else path.relative_to(ROOT).as_posix()
         proc = docker(['-charset', 'UTF-8', '-tsvg', rel], online=bool(args.remote_ref))
         (path.with_suffix('.log')).write_text(proc.stdout + proc.stderr)
         svgs = sorted(out.glob(path.stem + '*.svg'))

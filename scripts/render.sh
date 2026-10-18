@@ -6,5 +6,5 @@ set -eu
 rm -f /usr/local/lib/graphviz/libgvplugin_gd.*
 rm -f /usr/local/lib/graphviz/config6
 dot -c
-export GRAPHVIZ_DOT=/work/scripts/dot.sh
+export GRAPHVIZ_DOT="$(dirname "$0")/dot.sh"
 exec java -jar /opt/plantuml.jar "$@"
