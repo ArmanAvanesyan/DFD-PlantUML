@@ -192,7 +192,8 @@ def rejection(proc, paths, expected, name):
             texts = [''.join(e.itertext()) for e in ET.parse(path).getroot().iter(SVG + 'text')]
             messages += texts[-1:]
         except (OSError, ET.ParseError):
-            pass
+            if name == 'reject_graphviz' and path.exists():
+                messages.append(path.read_text(errors='replace'))
     if name == 'reject_graphviz':
         matched = any('syntax error' in m.lower() and 'error:' in m.lower() for m in messages)
     elif name == 'legacy_uml':

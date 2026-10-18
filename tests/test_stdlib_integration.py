@@ -3,6 +3,7 @@ import hashlib
 import importlib.util
 import sys
 import tempfile
+from types import SimpleNamespace
 import unittest
 import zipfile
 from pathlib import Path
@@ -46,6 +47,15 @@ class IntegrationGuards(unittest.TestCase):
             jar = self.candidate(Path(tmp))
             with self.assertRaises(KeyError):
                 integration.resources_in_jar(jar, {'dfd/info.spm': 'missing'})
+
+    def test_expected_graphviz_failure_accepts_raw_diagnostic_with_zero_exit(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'invalid.svg'
+            path.write_text("Error: <stdin>: syntax error in line 5 near '!'\n")
+            proc = SimpleNamespace(returncode=0)
+            self.assertTrue(integration.rejection(proc, [path], 'syntax error', 'reject_graphviz'))
+            path.write_text('source text mentions syntax error')
+            self.assertFalse(integration.rejection(proc, [path], 'syntax error', 'reject_graphviz'))
 
     def test_dot_comparison_preserves_quoted_blank_lines_and_spacing(self):
         original = b'@startdot\n\n  graph [label="first\n\nsecond \\"quoted\\" line"];\n  \nnode [label="Unicode \xc3\xa9"];\n'
