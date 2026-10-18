@@ -296,6 +296,27 @@ def validate(out, revision, lock, image, runtime, metadata=None):
     if proc.returncode == 0 and invalid is None:
         raise ValueError('Unmodified official JAR unexpectedly renders dfd')
     results.append({'case': 'official_jar_negative_control', 'passed': bool(invalid), 'diagnostics': proc.stdout + proc.stderr})
+    # Query metadata through PlantUML itself, proving the encoded namespace
+    # reports the selected library version rather than merely checking JSON.
+    expected_version = 'unreleased'
+    if metadata:
+        selected = subprocess.check_output(['git', '-C', str(ROOT), 'show', revision + ':' + metadata])
+        expected_version = json.loads(selected)['version']
+    metadata_dir = stage / 'metadata'
+    metadata_dir.mkdir()
+    metadata_case = metadata_dir / '__namespace_metadata__.puml'
+    release = 'https://github.com/ArmanAvanesyan/DFD-PlantUML/tree/' + revision
+    metadata_case.write_text('@startdot\n'
+        f'!assert %get_stdlib("dfd", "version") == "{expected_version}" : Bundled DFD version mismatch\n'
+        f'!assert %get_stdlib("dfd", "release") == "{release}" : Bundled DFD source revision mismatch\n'
+        '!assert %get_stdlib("dfd", "license") == "MIT" : Bundled DFD license mismatch\n'
+        f'digraph metadata {{\nproof [label="DFD-PlantUML {expected_version}"];\n}}\n@enddot\n')
+    proc = invoke(['/harness/stdlib-integration/render.sh', '-tsvg', metadata_case.name], metadata_dir, metadata_case.with_suffix('.log'))
+    ok = proc.returncode == 0 and inspect_svg(metadata_case.with_suffix('.svg')) is None
+    ok = ok and not re.search(r'Exception|Some diagram description contains errors', proc.stdout + proc.stderr)
+    results.append({'case': 'bundled_namespace_metadata', 'mode': 'bundled', 'passed': bool(ok),
+                    'expected_version': expected_version, 'expected_release': release,
+                    'source_sha256': digest(metadata_case), 'diagnostics': metadata_case.with_suffix('.log').relative_to(stage).as_posix()})
     for case in cases:
         passed = True
         for mode in ['local', 'bundled']:

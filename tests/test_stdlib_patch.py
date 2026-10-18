@@ -82,6 +82,7 @@ class ContributionPatchTests(unittest.TestCase):
         path.write_text('{"version":"9.9.9"}')
         result = patcher.prepare(self.repo, 'HEAD', self.upstream, self.output, 'packaging/stdlib/selected.json')
         self.assertEqual(result['export_manifest']['metadata']['version'], '2.3.4')
+        self.assertIn('Selected metadata: `2.3.4` (submission-candidate)', (self.output / 'REVIEW.md').read_text())
         patcher.git(self.upstream, 'apply', str(self.output / 'contribution.patch'))
         self.assertIn('version: 2.3.4', (self.upstream / 'stdlib/dfd/README.md').read_text())
         self.assertFalse((self.upstream / 'stdlib/dfd/selected.json').exists())

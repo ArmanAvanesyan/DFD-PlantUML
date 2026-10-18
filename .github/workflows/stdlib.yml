@@ -20,7 +20,9 @@ jobs:
       - name: Check exporter and integration guards
         run: python3 -m unittest discover -s tests -v
       - name: Export committed candidate
-        run: python3 scripts/stdlib.py export --revision HEAD --output build/stdlib
+        run: |
+          python3 scripts/stdlib.py export --revision HEAD --metadata packaging/stdlib/submission.json --output build/stdlib
+          python3 scripts/stdlib.py check --revision HEAD --metadata packaging/stdlib/submission.json --output build/stdlib
       - name: Fingerprint exported content
         id: export
         run: echo "hash=$(sha256sum build/stdlib/MANIFEST.json | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
@@ -33,11 +35,11 @@ jobs:
           restore-keys: |
             stdlib-gradle-${{ runner.os }}-${{ hashFiles('scripts/stdlib-lock.json', 'scripts/toolchain-current.json', 'scripts/Dockerfile', 'scripts/stdlib-integration/Dockerfile') }}-
       - name: Build actual candidate JAR and render offline
-        run: python3 -u scripts/stdlib_integration.py --revision HEAD
+        run: python3 -u scripts/stdlib_integration.py --revision HEAD --metadata packaging/stdlib/submission.json
       - name: Prepare local contribution review patch
         run: |
           git clone --no-hardlinks build/stdlib-integration/sources/stdlib build/stdlib-patch-upstream
-          python3 scripts/stdlib_patch.py --revision HEAD --upstream build/stdlib-patch-upstream --output build/stdlib-submission
+          python3 scripts/stdlib_patch.py --revision HEAD --metadata packaging/stdlib/submission.json --upstream build/stdlib-patch-upstream --output build/stdlib-submission
       - name: Retain integration evidence
         if: always()
         uses: actions/upload-artifact@v4
