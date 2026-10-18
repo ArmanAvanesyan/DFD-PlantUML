@@ -125,6 +125,16 @@ def bundled(source):
     return re.sub(r'!include (?:\.\./)+((?:DFD)[A-Za-z_0-9]*?)\.puml', r'!include <dfd/\1>', source)
 
 
+def check_case_names(cases):
+    reserved = set()
+    for case in cases:
+        for index in range(case['output_count']):
+            name = case['name'] + ('' if index == 0 else '_' + str(index).zfill(3))
+            if name in reserved:
+                raise ValueError('Duplicate integration artifact name: ' + name)
+            reserved.add(name)
+
+
 def semantic(path):
     root = ET.parse(path).getroot()
     # Ignore generator comments and graph title (source filename); retain all
@@ -201,13 +211,12 @@ def validate(out, revision, lock, image, runtime):
     if len(installation) != 1:
         raise ValueError('Missing documented installation example')
     cases.append({'name': 'installation', 'source': re.sub(r'^!\$DFD_ROOT = .*\n', '', installation[0], flags=re.M).replace('!includeurl $DFD_ROOT/', '!include ../../'), 'expected_diagnostic': None, 'output_count': 1})
-    if len({case['name'] for case in cases}) != len(cases):
-        raise ValueError('Duplicate integration case names')
+    check_case_names(cases)
     results = []
     commands = []
     write_json(stage / 'runtime.json', {
         'source_revision': revision, 'jar_sha256': digest(stage / 'candidate.jar'),
-        'runtime': dict(runtime, prepared_image=image),
+        'runtime': dict(runtime, prepared_image=image), 'upstream_sources': {name: lock[name] for name in ('stdlib', 'plantuml')},
         'harness_sha256': digest(Path(__file__)),
         'network': 'none', 'bundled_source_mount': False,
     })
@@ -270,6 +279,7 @@ def validate(out, revision, lock, image, runtime):
                     png = invoke(['/harness/stdlib-integration/render.sh', '-charset', 'UTF-8', '-tpng', rel], mount, path.with_suffix('.png.log'))
                     path.with_suffix('.png.log').write_text(png.stdout + png.stderr)
                     ok = png.returncode == 0 and inspect_png(path.with_suffix('.png')) is None
+                    ok = ok and not re.search(r'Exception|Error:|Some diagram description contains errors', png.stdout + png.stderr)
             results.append({'case': case['name'], 'mode': mode, 'passed': bool(ok), 'source_sha256': digest(path), 'expected_diagnostic': expected, 'diagnostics': path.with_suffix('.log').relative_to(stage).as_posix()})
             passed = passed and ok
         if passed and not case['expected_diagnostic']:

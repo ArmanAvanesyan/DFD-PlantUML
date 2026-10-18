@@ -47,6 +47,11 @@ class IntegrationGuards(unittest.TestCase):
             with self.assertRaises(KeyError):
                 integration.resources_in_jar(jar, {'dfd/info.spm': 'missing'})
 
+    def test_numbered_outputs_cannot_overwrite_another_fixture(self):
+        cases = [{'name': 'multiple', 'output_count': 2}, {'name': 'multiple_001', 'output_count': 1}]
+        with self.assertRaisesRegex(ValueError, 'artifact name'):
+            integration.check_case_names(cases)
+
     def test_bundled_container_mounts_no_local_library_directory(self):
         cases = Path('/isolated/validation/cases/bundled')
         jar = Path('/isolated/validation/candidate.jar')
