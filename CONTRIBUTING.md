@@ -4,7 +4,7 @@ Report bugs with a minimal `.puml` example, include URL or source commit, render
 
 Keep Level 0 and Level 1 published signatures compatible. Use one shared core and sibling profile includes; official files must not import the experimental testing repository. Propose alternate notations and Level 2 in `ArmanAvanesyan/test` first.
 
-Run `python3 scripts/check.py` with Python 3.10+ and Docker. The pinned image makes the local run equivalent to CI. Add behavioral fixtures when changing rendering, validation, or compatibility. Update the executable examples and matching README blocks together. Include representative SVG evidence in the PR.
+With Python 3.10+ and Docker, run `python3 scripts/check.py --toolchain baseline` and repeat with `--toolchain current`. Run `python3 -m unittest discover -s tests -v` and the distribution checks in [RELEASING.md](docs/RELEASING.md). The pinned toolchain matrix matches CI. Add behavioral fixtures when changing rendering, validation, or compatibility. Update the executable examples and matching README blocks together. Include representative SVG evidence in the PR.
 
 After pushing, run `python3 scripts/check.py --remote-ref FULL_COMMIT_SHA` to exercise actual raw GitHub includes. No secret is required. CI performs this check for branches in the official repository; fork contributors can run it after maintainers make their commit available in that repository.
 

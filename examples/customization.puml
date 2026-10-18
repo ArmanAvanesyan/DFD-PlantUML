@@ -1,4 +1,4 @@
-@startuml
+@startdot
 !include ../DFD_Level_0.puml
 SetTitleFontColor("#234567")
 SetSubtitleFontColor("#345678")
@@ -17,4 +17,4 @@ Process(System, "Loan System", "0")
 Flow(User, System, "request")
 BiFlow(System, User)
 endDfd()
-@enduml
+@enddot

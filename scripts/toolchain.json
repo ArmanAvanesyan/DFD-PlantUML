@@ -3,5 +3,7 @@
   "platform": "linux/amd64",
   "plantuml": "1.2025.2",
   "java": "Temurin 17.0.14+7",
-  "graphviz": "12.2.1"
+  "graphviz": "12.2.1",
+  "ubuntu_snapshot": "20261017T000000Z",
+  "png_backend": "Graphviz native GD"
 }

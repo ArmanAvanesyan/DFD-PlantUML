@@ -1,4 +1,4 @@
-@startuml
+@startdot
 !include ../DFD_Level_1.puml
 startDfd(Loan processing)
 External(Customer, "Customer")
@@ -12,4 +12,4 @@ Flow(Validate, Assess, "validated data")
 BiFlow(Assess, Applications, "assessment")
 Flow_Back(Customer, Assess, "decision")
 endDfd()
-@enduml
+@enddot
