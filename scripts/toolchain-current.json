@@ -1,0 +1,9 @@
+{
+  "image": "plantuml/plantuml@sha256:9b5071ab56a4192aac458ab4b0d42261c22c8109695894ae5be6013c3be6cac1",
+  "platform": "linux/amd64",
+  "plantuml": "1.2026.9",
+  "java": "Temurin 21.0.12.1+1",
+  "graphviz": "14.0.1",
+  "ubuntu_snapshot": "20261017T000000Z",
+  "png_backend": "Graphviz native GD"
+}

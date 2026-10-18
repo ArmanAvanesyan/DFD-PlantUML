@@ -56,8 +56,46 @@
   !return $result
 !endfunction
 
+' Preserve legacy backslash-n line breaks; doubled backslashes mean literal text.
+!function DFD_NormalizeLines($text)
+  !$result = ""
+  !$index = 0
+  !while ($index < %strlen($text))
+    !$char = %substr($text, $index, 1)
+    !if ($char == %chr(92))
+      !$slashes = 0
+      !while (%substr($text, $index, 1) == %chr(92))
+        !$slashes = $slashes + 1
+        !$index = $index + 1
+      !endwhile
+      !if (%substr($text, $index, 1) == "n")
+        !while ($slashes >= 2)
+          !$result = $result + %chr(92)
+          !$slashes = $slashes - 2
+        !endwhile
+        !if ($slashes == 1)
+          !$result = $result + %chr(10)
+        !else
+          !$result = $result + "n"
+        !endif
+        !$index = $index + 1
+      !else
+        !while ($slashes > 0)
+          !$result = $result + %chr(92)
+          !$slashes = $slashes - 1
+        !endwhile
+      !endif
+    !else
+      !$result = $result + $char
+      !$index = $index + 1
+    !endif
+  !endwhile
+  !return $result
+!endfunction
+
 ' Escape DOT strings; record labels additionally escape record metacharacters.
 !function DFD_Text($text)
+  !$text = DFD_NormalizeLines($text)
   !$text = DFD_Replace($text, %chr(92), %chr(92) + %chr(92))
   !$text = DFD_Replace($text, %chr(34), %chr(92) + %chr(34))
   !$text = DFD_Replace($text, %chr(13), "")
@@ -72,6 +110,7 @@
   !return $text
 !endfunction
 !function DFD_Html($text)
+  !$text = DFD_NormalizeLines($text)
   !$text = DFD_Replace($text, "&", "&amp;")
   !$text = DFD_Replace($text, "<", "&lt;")
   !$text = DFD_Replace($text, ">", "&gt;")

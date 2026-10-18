@@ -1,36 +1,55 @@
 name: Render compatibility
 on:
   push:
+    branches: [main]
   pull_request:
 permissions:
   contents: read
 jobs:
   offline:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-      - name: Render offline and test compatibility
-        run: python3 -u scripts/check.py
-      - name: Retain render evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: offline-render-evidence
-          path: build/checks/
-  remote:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    name: Offline and distribution (${{ matrix.toolchain }})
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain: [baseline, current]
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
-      - name: Render commit-pinned remote includes
+      - name: Verify PNG and archive integrity checks
+        run: python3 -m unittest discover -s tests -v
+      - name: Render offline compatibility and native PNG
+        run: python3 -u scripts/check.py --toolchain "${{ matrix.toolchain }}"
+      - name: Verify deterministic distribution and fresh offline installation
+        run: python3 -u scripts/distribution.py --check --toolchain "${{ matrix.toolchain }}"
+      - name: Retain candidate and render evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: offline-and-distribution-${{ matrix.toolchain }}
+          path: |
+            build/checks-${{ matrix.toolchain }}/
+            build/dist/
+  remote:
+    name: Remote (${{ matrix.toolchain }})
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain: [baseline, current]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Render commit-pinned remote includes and native PNG
         env:
           SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-        run: python3 -u scripts/check.py --remote-ref "$SOURCE_SHA"
+        run: python3 -u scripts/check.py --toolchain "${{ matrix.toolchain }}" --remote-ref "$SOURCE_SHA"
       - name: Retain remote evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: remote-render-evidence
-          path: build/remote/
+          name: remote-render-${{ matrix.toolchain }}
+          path: build/remote-${{ matrix.toolchain }}/
