@@ -15,6 +15,11 @@
     "detail": "valid SVG"
   },
   {
+    "case": "installation",
+    "passed": true,
+    "detail": "valid SVG"
+  },
+  {
     "case": "empty_title",
     "passed": true,
     "detail": "valid SVG"

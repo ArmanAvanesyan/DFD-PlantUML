@@ -65,6 +65,12 @@ def main():
         dest = out / source.name
         dest.write_text(source.read_text().replace('../DFD_', '../../DFD_'))
         cases.append((dest, None))
+    installation = re.findall(r"```text\n(@startuml\n.*?)```", (ROOT / 'README.md').read_text(), re.S)
+    if len(installation) != 1:
+        sys.exit('Expected exactly one documented remote installation example')
+    path = out / 'installation.puml'
+    path.write_text(re.sub(r'^!\$DFD_ROOT = .*\n', '', installation[0], flags=re.M).replace('!includeurl $DFD_ROOT/', '!include ../../'))
+    cases.append((path, None))
     if not args.remote_ref:
         cases += [
             fixture(out, 'empty_title', 0, 'startDfd()\nExternal(U, "User")\nProcess(P, "System")\nFlow(U, P)\nendDfd()'),
