@@ -48,6 +48,17 @@ class IntegrationGuards(unittest.TestCase):
             with self.assertRaises(KeyError):
                 integration.resources_in_jar(jar, {'dfd/info.spm': 'missing'})
 
+    def test_source_build_version_comes_from_jar_manifest(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            jar = Path(tmp) / 'version.jar'
+            with zipfile.ZipFile(jar, 'w') as archive:
+                archive.writestr('META-INF/MANIFEST.MF', 'Manifest-Version: 1.0\r\nImplementation-Version: 1.2026.9\r\n')
+            self.assertEqual(integration.jar_manifest_version(jar), '1.2026.9')
+            with zipfile.ZipFile(jar, 'w') as archive:
+                archive.writestr('META-INF/MANIFEST.MF', 'Manifest-Version: 1.0\r\n')
+            with self.assertRaisesRegex(ValueError, 'Implementation-Version'):
+                integration.jar_manifest_version(jar)
+
     def test_expected_graphviz_failure_accepts_raw_diagnostic_with_zero_exit(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / 'invalid.svg'

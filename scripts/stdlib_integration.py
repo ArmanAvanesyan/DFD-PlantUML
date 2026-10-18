@@ -52,6 +52,16 @@ def checkout(spec, target, logs):
         raise ValueError('Fetched source revision mismatch')
 
 
+def jar_manifest_version(path):
+    with zipfile.ZipFile(path) as archive:
+        manifest = archive.read('META-INF/MANIFEST.MF').decode('utf-8')
+    unfolded = manifest.replace('\r\n ', '').replace('\n ', '')
+    match = re.search(r'^Implementation-Version: ([^\r\n]+)', unfolded, re.M)
+    if not match:
+        raise ValueError('Candidate manifest lacks Implementation-Version')
+    return match.group(1)
+
+
 def resources_in_jar(jar, expected):
     with zipfile.ZipFile(jar) as archive:
         for name, fingerprint in expected.items():
@@ -263,8 +273,12 @@ def validate(out, revision, lock, image, runtime):
             source = case.get('bundled_source', bundled(case['source'])) if mode == 'bundled' else case['source']
             (folder / (case['name'] + '.puml')).write_text(source)
     versions = invoke(['/harness/stdlib-integration/render.sh', '-version'], stage / 'cases/bundled', stage / 'candidate-version.log')
-    if versions.returncode or ('PlantUML version ' + runtime['plantuml']) not in versions.stdout:
-        raise ValueError('Candidate engine version differs from the pinned runtime contract')
+    manifest_version = jar_manifest_version(stage / 'candidate.jar')
+    if versions.returncode or manifest_version != runtime['plantuml'] or 'PlantUML version ' not in versions.stdout:
+        raise ValueError('Candidate manifest version differs from the pinned runtime contract')
+    runtime_record = json.loads((stage / 'runtime.json').read_text())
+    runtime_record.update(candidate_manifest_version=manifest_version, candidate_reported_version=versions.stdout.splitlines()[0])
+    write_json(stage / 'runtime.json', runtime_record)
     # Official image does not contain our candidate library. A control that
     # succeeds unexpectedly invalidates the claim that this tests new resources.
     control_dir = stage / 'control'
