@@ -21,6 +21,10 @@ jobs:
         run: python3 -m unittest discover -s tests -v
       - name: Verify documentation links
         run: python3 scripts/docs.py
+      - name: Verify committed stdlib preview export
+        run: |
+          python3 scripts/stdlib.py export --revision HEAD --output build/stdlib
+          python3 scripts/stdlib.py check --revision HEAD --output build/stdlib
       - name: Render offline compatibility and native PNG
         run: python3 -u scripts/check.py --toolchain "${{ matrix.toolchain }}"
       - name: Verify deterministic distribution and fresh offline installation
