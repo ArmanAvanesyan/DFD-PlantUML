@@ -1,10 +1,25 @@
-!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/DFD-PlantUML/main/DFD.puml
-!$level="Context Diagram (DFD Level 0)"
-
-!unquoted procedure External($alias, $label)
-    $alias [label="$label" shape=box fillcolor=lightsteelblue1 style=filled fontcolor="#000000"  fontsize=12 color=grey width=1 height=2];
+' Context diagram: published Level 0 API.
+' Local files resolve their sibling; remote callers supply the pinned directory.
+!ifdef $DFD_ROOT
+!include $DFD_ROOT/DFD.puml
+!else
+!include DFD.puml
+!endif
+!ifndef DFD_LEVEL_0_LOADED
+!define DFD_LEVEL_0_LOADED
+!global $DFD_LEVEL = 0
+!global $LEVEL = "Context Diagram (DFD Level 0)"
+!unquoted procedure Process($alias, $label, $id="0")
+  !if ($DFD_VALIDATE && $DFD_PROCESS_COUNT > 0)
+    !assert %false() : "DFD Level 0 allows only one process"
+  !endif
+  !global $DFD_PROCESS_COUNT = $DFD_PROCESS_COUNT + 1
+DFD_Component($alias, $label, $id, "process")
 !endprocedure
-
-!unquoted procedure Process($alias, $label)
-   $alias [label="0 | $label\n\n" shape=Mrecord fillcolor=lightsteelblue1 style=filled fontcolor="#000000" fontsize=12 color=grey width=2];
+!unquoted procedure DataStore($alias, $label, $id="D")
+  !if $DFD_VALIDATE
+    !assert %false() : "Data stores are not allowed in DFD Level 0"
+  !endif
+DFD_Component($alias, $label, $id, "datastore")
 !endprocedure
+!endif

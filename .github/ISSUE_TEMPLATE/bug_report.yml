@@ -1,0 +1,24 @@
+name: Bug report
+description: Report a reproducible rendering or API problem.
+body:
+  - type: textarea
+    id: example
+    attributes:
+      label: Minimal PlantUML example
+      description: Include the exact include URL or source commit.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+      description: Include diagnostics or attach the rendered SVG.
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: PlantUML, Java, Graphviz, and OS versions
+    validations:
+      required: true

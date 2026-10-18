@@ -1,132 +1,136 @@
 # DFD-PlantUML
 
-![DFD Level 1 ](https://www.plantuml.com/plantuml/png/RP7HJiCW58Rl-nILAvOiHTexhpRJBJ7HQB87M5WvkaQW10wRUti1E-DikU6Sy_tdpnzOUHGEWrR5NMyw5IG4fyeZelKFZ3bnhZvwF8P3yE2wmI0OhBf1ixNJmgnFme2_2CCGF38jUiFQRRj_FgazhsnopVRjkwIxNbi5YsBpXU2CK1JuiYJNRcEmnmidVtazuVKDRoQyYVpD3HruJybBJ5EENPoNyUp2uOgzvKl2gtiIJSPPoUTaAKLzgwldT2bDSwjhHbqhKEnmS40bZ_YtZJZLMpMSFLqKwSwlucsIFHaRCE-IaUMvJEmru3-uVnJTvqzSERyD4IK-xvnXCsjDCu0f12FJpowALQo2Ljy0 "DFD Level 1 diagram Simple")
+The official PlantUML library for Level 0 context diagrams and Level 1 data-flow diagrams. It generates Graphviz DOT through PlantUML macros. Experiments live in [ArmanAvanesyan/test](https://github.com/ArmanAvanesyan/test); official library files never import that repository.
 
-DFD-PlantUML provides a structured way to visualize **Data Flow Diagrams (DFD)** using [PlantUML](http://en.plantuml.com/). It enables system designers and analysts to create **clear and concise representations of data movement** within a system, aiding in **system analysis, security assessment, and process documentation**. With an intuitive syntax, DFD-PlantUML simplifies the creation of DFDs, ensuring consistency and clarity across **various system design and data processing scenarios**.
+## Installation
 
-DFD-PlantUML includes **macros** for creating Data Flow Diagrams using PlantUML.
+Download `DFD.puml`, `DFD_Level_0.puml`, and `DFD_Level_1.puml` from the same commit into one directory. Include the desired profile locally. No edits to its sibling include are needed. Choose one profile per diagram.
 
-* [Features Status Overview](#-feature-status-overview)
-* [Getting Started](#getting-started)
-* [Supported Diagram Types](#supported-diagram-types)
-* [Data Flow Types](#data-flow-types)
-* [Background](#background)
-* [License](#license)
+For remote use, set `$DFD_ROOT` to the directory of one full source commit, then include its profile (replace `COMMIT_SHA`):
 
-## 📌 Feature Status Overview
-
-| **Feature Category**            | **Feature**                                        | **Status**    | **Priority** |
-|---------------------------------|----------------------------------------------------|--------------|-------------|
-| **✅ Core Features**            | DFD Base Elements (External Entities, Processes, Data Stores, Data Flows) | ✅ Done | 🔥 High |
-|                                 | DFD Diagram Levels (Level 0, Level 1)            | ✅ Done | 🔥 High |
-| **🔹 Multi-Level Diagram Support** | Extend DFD Level 2+ support (detailed process decomposition) | 🔲 To Be Done | 🔥 High |
-|                                 | Enable hierarchical linking between diagrams     | 🔲 To Be Done | 🔥 High |
-| **🎨 Visual Enhancements**      | Color Customization (Define custom colors for elements and flows) | 🔲 To Be Done | ⚡ Medium |
-|                                 | Style Customization (Border styles, element sizes, custom shapes) | 🔲 To Be Done | ⚡ Medium |
-|                                 | Layout Configurations (Automatic positioning, spacing control) | 🔲 To Be Done | ⚡ Medium |
-|                                 | Theme Support (Predefined & customizable themes for visual consistency) | 🔲 To Be Done | 💡 Low |
-| **🔄 Multi-Notation Support**   | Yourdon and DeMarco (1978) Notation               | 🔲 To Be Done | ⚡ Medium |
-|                                 | Gane and Sarson (1979) Notation                   | 🔲 To Be Done | ⚡ Medium |
-|                                 | Yourdon and Coad (1989) Notation                  | 🔲 To Be Done | ⚡ Medium |
-| **📂 Different Diagram Types**  | Logical DFDs (Conceptual flow, focusing on business logic) | 🔲 To Be Done | 🔥 High |
-|                                 | Physical DFDs (Implementation details like databases & interfaces) | 🔲 To Be Done | ⚡ Medium |
-| **🛠 Automated Tests & Syntax Validation** | Linting & Validation Rules to detect syntax errors | 🔲 To Be Done | 🔥 High |
-|                                 | Integration with CI/CD Pipelines for automated checks | 🔲 To Be Done | 🔥 High |
-| **📖 Documentation & Developer Resources** | Comprehensive README (Installation, usage, examples) | 🟡 In Progress | 🔥 High |
-|                                 | Scripts & CLI Tools (Easy DFD generation and conversion) | 🔲 To Be Done | ⚡ Medium |
-|                                 | Contribution Guidelines (How to contribute, PR review process) | 🟡 In Progress | 🔥 High |
-|                                 | Versioning & Release Plan (Semantic Versioning approach) | 🟡 In Progress | ⚡ Medium |
-| **🔧 Editor & IDE Support** | Snippets for VS Code (Predefined DFD templates for quick modeling) | 🔲 To Be Done | 💡 Low |
-|                                 | Live Templates for IntelliJ (Reusable DFD structures for faster development) | 🔲 To Be Done | 💡 Low |
-
-<table>
-<tr>
-<td width="50%" valign="top">
-
-### 📌 Explanation of Status Indicators
-- ✅ **Done** → Implemented & released.
-- 🟡 **In Progress** → Under development, expected in upcoming minor versions.
-- 🔲 **To Be Done** → Planned for future releases.
-
-</td>
-<td width="50%" valign="top">
-
-### 📌 Priority Labels Explanation
-- 🔥 **High Priority** → Features required for critical functionality.
-- ⚡ **Medium Priority** → Enhancements that improve usability and maintainability.
-- 💡 **Low Priority** → Nice-to-have features for improved user experience.
-
-</td>
-</tr>
-</table>
-
----
-
-## Getting Started
-
-At the top of your DFD PlantUML `.puml` file, you need to include the `DFD_Level_0.puml` or `DFD_Level_1.puml` file found in the `root` of this repo.
-
-To be independent of any internet connectivity, you can also download the files found in the `root` and reference it locally with
-
-```
-!include path/to/DFD_Level_0.puml
-```
-
-Just remember to change the `!include` statements inside the top of the files.
-
-If you want to use the always up-to-date version in this repo, use the following:
-
-```
-!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/DFD-PlantUML/main/DFD_Level_1.puml
-```
-
-Now let's create a DFD Context(Level 0) diagram:
-
-After you have included `DFD_Level_1.puml` you can use the defined macro definitions for the DFD elements: `Process`, `External_Entity`, `SubProcess`, `DataFlows`, `Flow`, `Flow_Back` and `BiFlow`
-
-```
-@startuml DFD_Elements
-!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/test/main/DFD_Lvl_1.puml
-startDfd(Simple)
-External(e1, "ExternalEntity1")
-External(e2, "ExternalEntity2")
-Process("Main Process")
-    SubProcess(sp1,"1.0", "Process 1")
-    SubProcess(sp2, "2.0", "Process 2")
-    DataStore(d1, "DataStore")
-DataFlows()
-Flow(e1, sp1, "Input Data")
-Flow(sp1, d1, "Output Data")
-Flow_Back(sp2, d1, "Input Data")
-Flow_Back(e2, sp2, "Output Data")
+```text
+@startuml
+!$DFD_ROOT = "https://raw.githubusercontent.com/ArmanAvanesyan/DFD-PlantUML/COMMIT_SHA"
+!includeurl $DFD_ROOT/DFD_Level_0.puml
+startDfd()
+External(User, "Customer")
+Process(System, "Loan System")
+Flow(User, System)
 endDfd()
 @enduml
+```
+
+Use `DFD_Level_1.puml` for Level 1. The profile loads `$DFD_ROOT/DFD.puml`, ensuring it uses the same commit. The pinned PlantUML engine does not infer a sibling URL from a remote include, so this explicit directory is required; local installs use sibling includes without configuration. Using `main` follows future changes. No PlantUML standard-library installation is assumed.
+
+## Examples
+
+The following snippets are the executable files under `examples/`; their relative includes assume that directory layout. CI checks that these blocks remain identical to the files.
+
+### Level 0
+
+![Level 0](docs/rendered/level_0.svg)
+
+```plantuml
+@startuml
+!include ../DFD_Level_0.puml
+startDfd(Loan System)
+External(Customer, "Customer")
+Process(System, "Loan System")
+Flow(Customer, System, "application")
+Flow_Back(Customer, System, "decision")
+BiFlow(Customer, System, "status")
+endDfd()
 @enduml
 ```
 
-![DFD_Elements](https://www.plantuml.com/plantuml/png/RP31JiCm38RlVOgGKoTD3UcHquQwIKWWaFe0LTOOLf6uKU9ixEr9IZV1HY-D_NtzxMOLI7cArXHt0_OcQeZUi3sH2mz2U7MiFWRQnrqCuFiH2P2gVhHYxQt2zK4XX9D2GH18M3MWQBPDztmmdQnSJftYctTTjeDr1XR5vel0ep8bo2NZvsg3DD19yj-ylk5rucz-x264ah-aQMokKf-bfusxCmvEBhcixdaAcNjC_gVbAVLVhvwzHf5gQVHGwhphfKmudxTcF8PoKUJtz3V1PUq9NIIM1JwpgQypUurq1Rj7rN_-hA5llxu8a7YMhYC0TRxSHR5AfsZDDm00 "DFD_Elements")
+### Level 1
 
----
+![Level 1](docs/rendered/level_1.svg)
 
-## Supported Diagram Types
+```plantuml
+@startuml
+!include ../DFD_Level_1.puml
+startDfd(Loan processing)
+External(Customer, "Customer")
+Process("Loan System")
+SubProcess(Validate, "1.0", "Validate application")
+SubProcess(Assess, "2.0", "Assess risk")
+DataStore(Applications, "Applications")
+DataFlows()
+Flow(Customer, Validate, "application")
+Flow(Validate, Assess, "validated data")
+BiFlow(Assess, Applications, "assessment")
+Flow_Back(Customer, Assess, "decision")
+endDfd()
+@enduml
+```
 
-* Context diagram (Data Flow diagram level 0)
-  * Import: `!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/DFD-PlantUML/main/DFD_Level_0.puml`
-  * Macros: `Process`, `External_Entity`
-* Data Flow diagram level 1
-  * Import: `!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/DFD-PlantUML/main/DFD_Level_1.puml`
-  * Macros: `External_Entity`, `Process`, `SubProcess`, `DataStore`
+`Process(label)` opens the Level 1 boundary; `DataFlows()` closes it before the external flows. Level 0 instead uses `Process(alias, label, id="0")` to create its central node. Existing published call signatures are retained.
 
----
+## API and customization
 
-## Data Flow Types
+| Call | Behavior |
+|---|---|
+| `startDfd(title="")`, `endDfd()` | Open/close a graph; reset node registry and process count |
+| `External(alias, label, id="")` | External entity; `External_Entity` is an alias |
+| `Process(alias, label, id="0")` | Level 0 process |
+| `Process(label)`, `DataFlows()` | Open/close a Level 1 process boundary |
+| `SubProcess(alias, id, label)` | Level 1 process node; argument order is unchanged |
+| `DataStore(alias, label, id="D")` | Data store (Level 0 allowed only when validation is off) |
+| `Flow(from, to, label="")` | Forward arrow |
+| `Flow_Back(from, to, label="")` | Arrow from `to` toward `from` |
+| `BiFlow(from, to, label="")` | Two arrowheads |
+| `SetValidation(1)` | Opt into Level 0 restrictions and exact endpoint validation |
 
-- `Flow(from, to, ?label)` (forward direction data flow)
-- `BiFlow(from, to, ?label)` (bidirectional data flow)
-- `Flow_Back(from, to, ?label)` (back direction data flow)
+Aliases must be simple DOT identifiers, such as `Customer` or `P1`; labels are arbitrary text. Quotes, backslashes, record punctuation, Unicode, and actual line breaks are escaped by the renderer. Construct a line break with `%chr(10)` in a variable, then pass that variable to the macro; unquoted macros do not accept inline expressions. Untrusted aliases and raw DOT fragments are outside the API.
 
----
+Customization setters apply to subsequent output. Call them before `startDfd()` for graph/title settings, and before creating the affected elements/flows. Quote fractional numbers, e.g. `SetProcessSize("2.5", "1.2")`, because the pinned PlantUML preprocessor does not preserve unquoted decimal literals reliably.
 
-## License
+- Titles: `SetTitleFontSize`, `SetTitleFontColor`, `SetSubtitleFontSize`, `SetSubtitleFontColor`.
+- Elements: `SetComponentFontSize`, `SetComponentFontColor`, `SetComponentBorderColor`; `SetExternalStyle/FillColor/Shape/Size`, `SetProcessStyle/FillColor/Shape/Size`, `SetDataStoreStyle/FillColor/Shape/Size`.
+- Batches: `SetAllComponentColors(fill, border="grey", font="#000000")`, `SetAllComponentStyles(style="filled")`, `SetAllComponentSizes(width=2, height=1)`.
+- Flows: `SetFlowStyle`, `SetFlowColor`, `SetFlowFontColor`, `SetFlowFontSize`, `SetFlowPenWidth`, `SetAllFlowProperties(style="solid", color="black", fontColor="black", fontSize=13, penWidth=1)`.
+- Layout: `SetRankDir`, `SetRankSep`, `SetNodeSep`, `SetSplines`, `SetFlowConcentrate`.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+A complete customization example:
+
+```plantuml
+@startuml
+!include ../DFD_Level_0.puml
+SetTitleFontColor("#234567")
+SetSubtitleFontColor("#345678")
+SetExternalFillColor("#FFFDE7")
+SetProcessFillColor("#E3F2FD")
+SetProcessSize("2.5", "1.2")
+SetComponentFontSize(14)
+SetAllFlowProperties("dashed", "#BB2222", "#234567", 12, 2)
+SetRankDir("TB")
+SetRankSep("1.2")
+SetSplines("polyline")
+SetValidation(1)
+startDfd(Customized diagram)
+External(User, "Customer")
+Process(System, "Loan System", "0")
+Flow(User, System, "request")
+BiFlow(System, User)
+endDfd()
+@enduml
+```
+
+Validation is off by default to retain permissive published behavior. When enabled, Level 0 rejects a second process and datastores; all flow endpoints must already have been declared. This is structural checking, not full DFD semantic analysis. State resets for each `startDfd()`; style settings persist within the same diagram. Misbalanced Level 1 boundaries are always errors.
+
+## Verification
+
+Requires Python 3.10+ and Docker. Run `python3 scripts/check.py` from a checkout. The first run downloads the digest-pinned image in `scripts/toolchain.json`; subsequent runs render with `--network none`. The image pins Java 17.0.14+7, PlantUML 1.2025.2, and Graphviz 12.2.1 on linux/amd64, including on ARM hosts through Docker emulation. The harness removes the upstream image's unusable GD plugin in each transient container and suppresses Graphviz warnings with `-q`; Graphviz errors remain visible. This prevents warnings from being merged into SVG bytes.
+
+After pushing a commit, run `python3 scripts/check.py --remote-ref FULL_COMMIT_SHA` to render every documented example through commit-pinned raw GitHub includes. This mode needs network access. It verifies remote directory resolution with no local library files mounted, ruling out accidental local fallback.
+
+Results, logs, expanded DOT, and SVGs are saved under `build/`. CI uploads them even on failure. Tests reject missing/malformed SVGs, error diagrams, preprocessing failures, and Graphviz failures; expected validation failures require the specific diagnostic. See [baseline investigation](docs/BASELINE.md) for original source hashes and render evidence.
+
+## Compatibility and status
+
+Implemented: Level 0 and Level 1, published flow directions and macro signatures, optional titles/IDs, color/style/size/layout setters, safe text labels, optional structural validation, offline and remote includes, render CI.
+
+Not part of this consolidation: Level 2, alternate notation selection, cross-diagram balancing, automatic hierarchy linking, themes, CLI generation, or standard-library registration. The experimental `DFD_INIT`, `DFD_PROFILE_*`, and uniform `DFD_*` APIs are not official interfaces. Retain experiments in `test` rather than treating their README claims as supported behavior.
+
+Existing release/tag `v0.1.0` is retained unchanged. This consolidation assigns no new release number and performs no automatic publication. Contributions: [CONTRIBUTING.md](CONTRIBUTING.md). License: [MIT](LICENSE).

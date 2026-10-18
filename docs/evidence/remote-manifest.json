@@ -1,0 +1,62 @@
+{
+  "origin/main": {
+    "commit": "a09a92dc89b31b7e21f1c40b956714ff0789dabc",
+    "sha256": {
+      "DFD.puml": "8ffb23af43075b0ab51b2f38b9a3a802bf827315b130c69f228be9626b111bca",
+      "DFD_Level_0.puml": "f7c21fde41f48ea9c403cf3fc496ab3ba2380140f38089a14726be4c36d5f104",
+      "DFD_Level_1.puml": "5af17bd32dd65d3a2409c0bba182e2d2e84da7b15970387e04258ce5d362c712"
+    }
+  },
+  "origin/develop": {
+    "commit": "f83acc34dbcafcae1545dc2527ae06df5cc5f41b",
+    "sha256": {
+      "DFD.puml": "9ab5a5e634d14d6928ec66566548d10cff59e889d44cc0f6f64c56de5d2f38b4",
+      "DFD_Level_0.puml": "4c040724a6df54e92728e14d525097b06d5cc67341cfff61c2e95b365fd53059",
+      "DFD_Level_1.puml": "a13bc42a1f5657f882db5b675cbc0ee593d0a50f41dd912dfaabc85e7c1ad46f"
+    }
+  },
+  "origin/feature/contributing-doc": {
+    "commit": "7f2daec12bec6c6de08e2beca6d59d7a5a6f2ca5",
+    "sha256": {
+      "DFD.puml": "9ab5a5e634d14d6928ec66566548d10cff59e889d44cc0f6f64c56de5d2f38b4",
+      "DFD_Level_0.puml": "4c040724a6df54e92728e14d525097b06d5cc67341cfff61c2e95b365fd53059",
+      "DFD_Level_1.puml": "a13bc42a1f5657f882db5b675cbc0ee593d0a50f41dd912dfaabc85e7c1ad46f"
+    }
+  },
+  "origin/feature/github-workflows": {
+    "commit": "b959fbca6dd361c08ef1cfad861ea4a54324090a",
+    "sha256": {
+      "DFD.puml": "9ab5a5e634d14d6928ec66566548d10cff59e889d44cc0f6f64c56de5d2f38b4",
+      "DFD_Level_0.puml": "4c040724a6df54e92728e14d525097b06d5cc67341cfff61c2e95b365fd53059",
+      "DFD_Level_1.puml": "a13bc42a1f5657f882db5b675cbc0ee593d0a50f41dd912dfaabc85e7c1ad46f"
+    }
+  },
+  "origin/feature/issue-templates": {
+    "commit": "71b690ae3ffbfd2489c38ee82962f0f647a08fdf",
+    "sha256": {
+      "DFD.puml": "9ab5a5e634d14d6928ec66566548d10cff59e889d44cc0f6f64c56de5d2f38b4",
+      "DFD_Level_0.puml": "4c040724a6df54e92728e14d525097b06d5cc67341cfff61c2e95b365fd53059",
+      "DFD_Level_1.puml": "a13bc42a1f5657f882db5b675cbc0ee593d0a50f41dd912dfaabc85e7c1ad46f"
+    }
+  },
+  "origin/release/0.1.0": {
+    "commit": "eab0634a2a5cb9625cc92133402cfa3b2e5cd870",
+    "sha256": {
+      "DFD.puml": "8ffb23af43075b0ab51b2f38b9a3a802bf827315b130c69f228be9626b111bca",
+      "DFD_Level_0.puml": "bfee58d88a50625e6158ca994431b6873cb355b4c1b0468ce791f4d3f8f32df6",
+      "DFD_Level_1.puml": "9d373c381db42dfdefd0bbc747549c16351342d94136f1cabbf47cd1580cbcd7"
+    }
+  },
+  "test/main": {
+    "commit": "4f6f30fbdd060db74864b24e9ecc5829e11f3b30",
+    "sha256": {
+      "DFD.puml": "c4f766ccff531ceabae6962413903c976a3d880cc3b9e63885effb0420ffb789",
+      "DFD_Level_0.puml": "43ab251aaad7fa437b4d85f47907d6d94d2008ffab112c17bc7c0dae180fb0c2",
+      "DFD_Level_1.puml": "c4b301f3a8ce3f7953377d32f3a8964a9bf8e6aaca5d703d1f054989ce695692"
+    }
+  },
+  "existing-release-tag": {
+    "tag": "v0.1.0",
+    "commit": "baa344fe1ec1b4a20486a47f06796183f1ccf16e"
+  }
+}

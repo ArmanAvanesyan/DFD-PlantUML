@@ -1,0 +1,68 @@
+@startuml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  digraph dfd {
+      graph [rankdir=LR ranksep=.5 labeljust=c labelloc=t \
+  label=<<TABLE BORDER="0" CELLBORDER="0"> \
+  <TR><TD><FONT POINT-SIZE="16">sample</FONT></TD></TR> \
+  <TR><TD><FONT POINT-SIZE="10">Context Diagram (DFD Level 0)</FONT></TD></TR> \
+  </TABLE>> ]
+    splines=spline
+    concentrate=false
+    nodesep=.5
+    node [shape=record]
+    User [
+    label="Customer"
+    shape=rectangle
+    style=filled
+    fillcolor=lightgray
+    fontcolor=#000000
+    fontsize=12
+    color=grey
+    width=2
+    height=1
+  ]
+
+
+    System [
+    label="0 | Loan System\n\n"
+    shape=circle
+    style=filled
+    fillcolor=lightsteelblue1
+    fontcolor=#000000
+    fontsize=12
+    color=grey
+    width=2
+    height=1
+  ]
+
+  }
+@enduml

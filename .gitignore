@@ -398,3 +398,11 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# DFD render outputs
+/build/
+__pycache__/
+.DS_Store
+/examples/*.svg
+/examples/*.png
+/examples/*.preproc

@@ -1,0 +1,7 @@
+{
+  "image": "plantuml/plantuml@sha256:62c11f4cec2c430a435df8b2892f9b1a7654393c8ef2086faaca32cc16151370",
+  "platform": "linux/amd64",
+  "plantuml": "1.2025.2",
+  "java": "Temurin 17.0.14+7",
+  "graphviz": "12.2.1"
+}

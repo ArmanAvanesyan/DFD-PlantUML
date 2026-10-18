@@ -1,0 +1,42 @@
+[
+  {
+    "case": "develop-L0-local",
+    "normalization": "Removed only leading Graphviz missing-GD-plugin warning before XML/SVG root",
+    "removed_prefix": "Warning: Could not load \"/usr/local/lib/graphviz/libgvplugin_gd.so.6\" - It was found, so perhaps one of its dependents was not.  Try ldd.\n",
+    "raw_sha256": "1149d59260eef5740d3d8ef8bbe447695538a96bd7fc8355b8dc84a5bb523972",
+    "normalized_sha256": "e3d8e98b7d6d41216b522c9eca0f70b4362e38f1e15991769d8e1093d135b069",
+    "raw_valid_xml": false
+  },
+  {
+    "case": "familyA-L0-local",
+    "normalization": "Removed only leading Graphviz missing-GD-plugin warning before XML/SVG root",
+    "removed_prefix": "Warning: Could not load \"/usr/local/lib/graphviz/libgvplugin_gd.so.6\" - It was found, so perhaps one of its dependents was not.  Try ldd.\n",
+    "raw_sha256": "24fc844fcc9e7dea27c08dc976d2e15d79b7cfb50119dc0b8764836463cc1c4c",
+    "normalized_sha256": "b14e0b5e4e7a26c9688197f70aeff8ee0e69933171dc68f5fb786001da21112b",
+    "raw_valid_xml": false
+  },
+  {
+    "case": "familyA-L1-local",
+    "normalization": "Removed only leading Graphviz missing-GD-plugin warning before XML/SVG root",
+    "removed_prefix": "Warning: Could not load \"/usr/local/lib/graphviz/libgvplugin_gd.so.6\" - It was found, so perhaps one of its dependents was not.  Try ldd.\n",
+    "raw_sha256": "b3ea46b1e18ed2f21230f0534b5b46a066fcbf39b5c0fa41d95d249b24f3aa59",
+    "normalized_sha256": "513e8a865149bce9748cbbfa094062fa2af9112e7a68256f746ab9091ea6f9a9",
+    "raw_valid_xml": false
+  },
+  {
+    "case": "official-main-L0-local",
+    "normalization": "Removed only leading Graphviz missing-GD-plugin warning before XML/SVG root",
+    "removed_prefix": "Warning: Could not load \"/usr/local/lib/graphviz/libgvplugin_gd.so.6\" - It was found, so perhaps one of its dependents was not.  Try ldd.\n",
+    "raw_sha256": "24fc844fcc9e7dea27c08dc976d2e15d79b7cfb50119dc0b8764836463cc1c4c",
+    "normalized_sha256": "b14e0b5e4e7a26c9688197f70aeff8ee0e69933171dc68f5fb786001da21112b",
+    "raw_valid_xml": false
+  },
+  {
+    "case": "official-main-L1-local",
+    "normalization": "Removed only leading Graphviz missing-GD-plugin warning before XML/SVG root",
+    "removed_prefix": "Warning: Could not load \"/usr/local/lib/graphviz/libgvplugin_gd.so.6\" - It was found, so perhaps one of its dependents was not.  Try ldd.\n",
+    "raw_sha256": "b3ea46b1e18ed2f21230f0534b5b46a066fcbf39b5c0fa41d95d249b24f3aa59",
+    "normalized_sha256": "513e8a865149bce9748cbbfa094062fa2af9112e7a68256f746ab9091ea6f9a9",
+    "raw_valid_xml": false
+  }
+]

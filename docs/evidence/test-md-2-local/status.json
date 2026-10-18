@@ -1,0 +1,26 @@
+{
+  "case": "test-md-2-local",
+  "exit_code": 200,
+  "svg_count": 0,
+  "error_svgs": [],
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--entrypoint",
+    "java",
+    "-e",
+    "PLANTUML_SECURITY_PROFILE=UNSECURE",
+    "-v",
+    "/tmp/dfd-baseline-evidence:/work",
+    "plantuml/plantuml@sha256:62c11f4cec2c430a435df8b2892f9b1a7654393c8ef2086faaca32cc16151370",
+    "-jar",
+    "/opt/plantuml.jar",
+    "-tsvg",
+    "-failfast2",
+    "/work/test-md-2-local/case.puml"
+  ],
+  "semantic_pass": false,
+  "strict_artifact_acceptance": false,
+  "artifact_note": "Baseline raw output may contain a leading Graphviz GD-plugin warning; semantic pass is not strict raw SVG acceptance."
+}

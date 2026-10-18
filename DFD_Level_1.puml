@@ -1,24 +1,34 @@
-!includeurl https://raw.githubusercontent.com/ArmanAvanesyan/DFD-PlantUML/main/DFD.puml
-!$level="DFD Level 1"
-
+' System decomposition: published Level 1 API.
+' Local files resolve their sibling; remote callers supply the pinned directory.
+!ifdef $DFD_ROOT
+!include $DFD_ROOT/DFD.puml
+!else
+!include DFD.puml
+!endif
+!ifndef DFD_LEVEL_1_LOADED
+!define DFD_LEVEL_1_LOADED
+!global $DFD_LEVEL = 1
+!global $LEVEL = "DFD Level 1"
 !unquoted procedure Process($label)
-subgraph cluster_level1{
-graph [clusterrank=local rankdir=TB labeljust=c labelloc=t color=grey \
-label="$label"]
+  !if $DFD_CLUSTER_OPEN
+    !assert %false() : "Close the preceding boundary first"
+  !endif
+  !global $DFD_CLUSTER_OPEN = 1
+  !$text = DFD_Text($label)
+subgraph cluster_level1 {
+graph [clusterrank=local rankdir=TB labeljust=c labelloc=t color=grey label="$text"]
 !endprocedure
-
 !procedure DataFlows()
+  !if ($DFD_CLUSTER_OPEN == 0)
+    !assert %false() : "Boundary close requires an open Level 1 process"
+  !endif
+  !global $DFD_CLUSTER_OPEN = 0
 }
 !endprocedure
-
-!unquoted procedure External($alias, $label)
-    $alias [label="$label" shape=box fillcolor=lightsteelblue1 style=filled fontcolor="#000000"  fontsize=12 color=grey width=1 height=2];
-!endprocedure
-
 !unquoted procedure SubProcess($alias, $id, $label)
-   $alias [label="$id | $label\n\n\n" shape=Mrecord fillcolor=lightsteelblue1 style=filled fontcolor="#000000" fontsize=12 color=grey width=2];
+DFD_Component($alias, $label, $id, "process")
 !endprocedure
-
-!procedure DataStore($alias, $label)
-    $alias [label="{<f0>D |<f1> $label}" shape=record fillcolor=lightsteelblue1 style=filled fontcolor="#000000" fontsize=12 color=grey width=2];
+!unquoted procedure DataStore($alias, $label, $id="D")
+DFD_Component($alias, $label, $id, "datastore")
 !endprocedure
+!endif
