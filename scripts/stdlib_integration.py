@@ -125,6 +125,23 @@ def bundled(source):
     return re.sub(r'!include (?:\.\./)+((?:DFD)[A-Za-z_0-9]*?)\.puml', r'!include <dfd/\1>', source)
 
 
+def canonical_dot(data):
+    """Ignore only empty lines outside quoted strings; retain all other bytes."""
+    quoted = escaped = False
+    output = []
+    for line in data.decode('utf-8').splitlines(keepends=True):
+        if line.strip() or quoted:
+            output.append(line)
+        for char in line:
+            if escaped:
+                escaped = False
+            elif char == chr(92) and quoted:
+                escaped = True
+            elif char == chr(34):
+                quoted = not quoted
+    return ''.join(output).encode('utf-8')
+
+
 def check_case_names(cases):
     reserved = set()
     for case in cases:
@@ -159,6 +176,13 @@ def behavior(name, dot, svg):
     if name == 'special_labels':
         return all(token in text for token in ['Quotes "yes"', '& <tags> {x|y}', 'café', 'Հայերեն', 'first', 'second'])
     return True
+
+
+def missing_namespace(diagnostic):
+    # Current SPM loader reports the absent namespace resource, followed by
+    # a generic Fatal parsing error SVG; require the precise root cause.
+    return bool(re.search(r'FileNotFoundException:\s*stdlib/dfd/info\.spm', diagnostic)
+                or re.search(r'(cannot|can.t|unable).*include.*dfd/', diagnostic, re.I))
 
 
 def rejection(proc, paths, expected, name):
@@ -205,7 +229,7 @@ def validate(out, revision, lock, image, runtime):
             dest.write_bytes(subprocess.check_output(['git', '-C', str(ROOT), 'show', revision + ':' + name]))
     cases = load_cases('current', snapshot / 'tests/fixtures')
     for source in sorted((snapshot / 'examples').glob('*.puml')):
-        cases.append({'name': source.stem, 'source': source.read_text().replace('../DFD_', '../../DFD_'), 'expected_diagnostic': None, 'output_count': 1})
+        cases.append({'name': source.stem, 'source': source.read_text().replace('../DFD_', '../../DFD_'), 'bundled_source': '@startdot\n!include <dfd/_examples_/' + source.stem + '>\n@enddot\n', 'expected_diagnostic': None, 'output_count': 1})
     readme = (snapshot / 'README.md').read_text()
     installation = re.findall(r'```text\n(@startdot\n.*?)```', readme, re.S)
     if len(installation) != 1:
@@ -219,6 +243,7 @@ def validate(out, revision, lock, image, runtime):
         'runtime': dict(runtime, prepared_image=image), 'upstream_sources': {name: lock[name] for name in ('stdlib', 'plantuml')},
         'harness_sha256': digest(Path(__file__)),
         'network': 'none', 'bundled_source_mount': False,
+        'dot_comparison': 'Remove only empty lines outside quoted strings; retain raw files and hashes',
     })
 
     def invoke(args, mount, log):
@@ -234,8 +259,11 @@ def validate(out, revision, lock, image, runtime):
         folder = stage / 'cases' / mode
         folder.mkdir(parents=True)
         for case in cases:
-            source = bundled(case['source']) if mode == 'bundled' else case['source']
+            source = case.get('bundled_source', bundled(case['source'])) if mode == 'bundled' else case['source']
             (folder / (case['name'] + '.puml')).write_text(source)
+    versions = invoke(['/harness/stdlib-integration/render.sh', '-version'], stage / 'cases/bundled', stage / 'candidate-version.log')
+    if versions.returncode or ('PlantUML version ' + runtime['plantuml']) not in versions.stdout:
+        raise ValueError('Candidate engine version differs from the pinned runtime contract')
     # Official image does not contain our candidate library. A control that
     # succeeds unexpectedly invalidates the claim that this tests new resources.
     control_dir = stage / 'control'
@@ -248,7 +276,7 @@ def validate(out, revision, lock, image, runtime):
     diagnostic = proc.stdout + proc.stderr
     if control.with_suffix('.svg').exists():
         diagnostic += ' '.join(ET.parse(control.with_suffix('.svg')).getroot().itertext())
-    if not re.search(r'(cannot|can.t|unable).*include|include.*(not found|cannot)', diagnostic, re.I):
+    if not missing_namespace(diagnostic):
         raise ValueError('Official negative control failed without a missing-include diagnostic')
     if proc.returncode == 0 and invalid is None:
         raise ValueError('Unmodified official JAR unexpectedly renders dfd')
@@ -290,7 +318,12 @@ def validate(out, revision, lock, image, runtime):
             # PlantUML releases may combine graphs into one preprocessor output
             # or emit numbered files; compare every emitted output either way.
             same = len(left_pre) == len(right_pre) and len(left_pre) in (1, case['output_count'])
-            same = same and all(a.read_bytes() == b.read_bytes() for a, b in zip(left_pre, right_pre))
+            for left_dot, right_dot in zip(left_pre, right_pre):
+                left_canonical = canonical_dot(left_dot.read_bytes())
+                right_canonical = canonical_dot(right_dot.read_bytes())
+                left_dot.with_suffix('.canonical.dot').write_bytes(left_canonical)
+                right_dot.with_suffix('.canonical.dot').write_bytes(right_canonical)
+                same = same and left_canonical == right_canonical
             for index in range(case['output_count']):
                 suffix = '' if index == 0 else '_' + str(index).zfill(3)
                 left = local.with_name(local.name + suffix)

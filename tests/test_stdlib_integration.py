@@ -47,6 +47,17 @@ class IntegrationGuards(unittest.TestCase):
             with self.assertRaises(KeyError):
                 integration.resources_in_jar(jar, {'dfd/info.spm': 'missing'})
 
+    def test_dot_comparison_preserves_quoted_blank_lines_and_spacing(self):
+        original = b'@startdot\n\n  graph [label="first\n\nsecond \\"quoted\\" line"];\n  \nnode [label="Unicode \xc3\xa9"];\n'
+        expected = b'@startdot\n  graph [label="first\n\nsecond \\"quoted\\" line"];\nnode [label="Unicode \xc3\xa9"];\n'
+        self.assertEqual(integration.canonical_dot(original), expected)
+        self.assertNotEqual(integration.canonical_dot(b'label="a\n\nb";\n'), integration.canonical_dot(b'label="a\nb";\n'))
+
+    def test_official_control_requires_missing_dfd_namespace_root_cause(self):
+        self.assertTrue(integration.missing_namespace('java.io.FileNotFoundException: stdlib/dfd/info.spm (No such file or directory)'))
+        self.assertFalse(integration.missing_namespace('Fatal parsing error'))
+        self.assertFalse(integration.missing_namespace('FileNotFoundException: unrelated.puml'))
+
     def test_numbered_outputs_cannot_overwrite_another_fixture(self):
         cases = [{'name': 'multiple', 'output_count': 2}, {'name': 'multiple_001', 'output_count': 1}]
         with self.assertRaisesRegex(ValueError, 'artifact name'):
