@@ -1,0 +1,44 @@
+name: Candidate stdlib integration
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: stdlib-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  bundled:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Check exporter and integration guards
+        run: python3 -m unittest discover -s tests -v
+      - name: Export committed candidate
+        run: python3 scripts/stdlib.py export --revision HEAD --output build/stdlib
+      - name: Fingerprint exported content
+        id: export
+        run: echo "hash=$(sha256sum build/stdlib/MANIFEST.json | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        with:
+          path: build/stdlib-gradle-cache
+          key: stdlib-gradle-${{ runner.os }}-${{ hashFiles('scripts/stdlib-lock.json', 'scripts/toolchain-current.json', 'scripts/Dockerfile', 'scripts/stdlib-integration/Dockerfile') }}-${{ steps.export.outputs.hash }}
+          restore-keys: |
+            stdlib-gradle-${{ runner.os }}-${{ hashFiles('scripts/stdlib-lock.json', 'scripts/toolchain-current.json', 'scripts/Dockerfile', 'scripts/stdlib-integration/Dockerfile') }}-
+      - name: Build actual candidate JAR and render offline
+        run: python3 -u scripts/stdlib_integration.py --revision HEAD
+      - name: Retain integration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: candidate-stdlib-evidence
+          path: |
+            build/stdlib-integration/logs/
+            build/stdlib-integration/export/
+            build/stdlib-integration/candidate.jar
+            build/stdlib-integration/build-provenance.json
+            build/stdlib-integration/validation/
+          retention-days: 14
