@@ -1,6 +1,6 @@
 # Migrating to the consolidated library
 
-Use `ArmanAvanesyan/DFD-PlantUML` for supported Level 0 and Level 1 diagrams. `ArmanAvanesyan/test` remains an experimental repository; official diagrams must not depend on its files. This guide describes the unreleased consolidation and does not assign a release version.
+Use `ArmanAvanesyan/DFD-PlantUML` for supported Level 0 and Level 1 diagrams. `ArmanAvanesyan/test` remains an experimental repository; official diagrams must not depend on its files. This guide describes the proposed 0.2.0 consolidation; publication remains pending.
 
 ## Install one matching set
 

@@ -107,4 +107,4 @@ Run `python3 -m unittest discover -s tests -v`, then `python3 scripts/check.py -
 
 Level 0–1 is implemented. Level 2, alternate notations, automatic hierarchy linking, and experimental `DFD_INIT`/uniform `DFD_*` APIs remain outside the supported library. Experiments stay in the testing repository.
 
-No new release number is assigned. Publication is a separate manual action. License: [MIT](LICENSE).
+Version **0.2.0** is the proposed release candidate for the compatible Level 0–1 consolidation; publication is pending. See the [proposed release notes](docs/RELEASE_NOTES.md). The historical `v0.1.0` tag is unchanged. License: [MIT](LICENSE).

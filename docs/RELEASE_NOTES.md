@@ -1,6 +1,8 @@
-# Draft release notes
+# DFD-PlantUML 0.2.0 — proposed release notes
 
-These notes describe the unversioned release candidate. They do not announce a release or assign a version. The accepted source SHA and evidence belong in the release-readiness PR; update these notes after reviewing that evidence and before any separately authorized publication.
+Version **0.2.0** is selected for this release candidate; publication is pending. These notes do not announce a released artifact. The accepted source SHA and evidence belong in the candidate PR and must pass review before separately authorized publication.
+
+The minor version identifies the functional Level 0–1 consolidation while preserving the published API. It does not claim a 1.0 stability milestone. The historical `v0.1.0` tag remains unchanged.
 
 ## Library and compatibility
 
@@ -16,6 +18,6 @@ Canonical examples use `@startdot` / `@enddot` and require Graphviz. Tested tool
 
 ## Stdlib preview and exclusions
 
-A deterministic export and an actual locally built PlantUML candidate JAR demonstrate proposed `<dfd/...>` installation, offline bundled/local parity, and native SVG/PNG rendering. Existing official PlantUML releases do not ship this contribution. Candidate metadata remains subject to review; local preparation does not submit anything upstream. See [stdlib status](STDLIB.md).
+A deterministic export and an actual locally built PlantUML candidate JAR demonstrate proposed `<dfd/...>` installation, offline bundled/local parity, and native SVG/PNG rendering. Existing official PlantUML releases do not ship this contribution. The committed submission metadata selects `0.2.0` for review; the default exporter mode remains `unreleased`. Local preparation does not submit anything upstream. See [stdlib status](STDLIB.md).
 
-Level 2, alternate notations, and experimental APIs remain outside this candidate. The historical `v0.1.0` tag contains empty library files and is not the functional compatibility baseline. No release number has been selected.
+Level 2, alternate notations, and experimental APIs remain outside this candidate. The historical `v0.1.0` tag contains empty library files and is not the functional compatibility baseline. The proposed version is `0.2.0`; no tag or release is created by candidate preparation.

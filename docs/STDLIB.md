@@ -17,7 +17,20 @@ Bundled profiles resolve `<dfd/DFD>` and examples resolve the corresponding prof
 
 Preview metadata uses `version: unreleased` and a source commit permalink as `release`. These are candidate review values, not a release number or published release. The metadata template is maintained upstream; generated files are ignored and must not be edited manually. The manifest remains outside the contribution so it cannot become an unintended bundled resource.
 
-The optional `--metadata PATH` argument accepts a repository-relative JSON file committed in the selected revision. Its object must contain exactly one field, `version`, whose string value is stable SemVer `MAJOR.MINOR.PATCH`; duplicate keys, extra fields, prerelease labels, and build suffixes are rejected. The default remains `unreleased`; this work selects no release number and adds no version-selection file. Export/check must use the same metadata path. Selecting metadata neither creates a tag/release nor proves upstream acceptance or shipping. Review the version separately before a future submission.
+The optional `--metadata PATH` argument accepts a repository-relative JSON file committed in the selected revision. Its object must contain exactly one field, `version`, whose string value is stable SemVer `MAJOR.MINOR.PATCH`; duplicate keys, extra fields, prerelease labels, and build suffixes are rejected. The default remains `unreleased`. The current 0.2.0 candidate selects its version explicitly through the committed `packaging/stdlib/submission.json`; this selection does not change preview defaults. Export/check must use the same metadata path. Selecting metadata neither creates a tag/release nor proves upstream acceptance or shipping. Review the version separately before a future submission.
+
+## Selected 0.2.0 candidate metadata
+
+`packaging/stdlib/submission.json` selects `0.2.0` for the proposed compatible functional consolidation. It does not create a tag/release, submit a contribution, or establish official PlantUML shipping. Use explicit metadata mode for this candidate, with fresh output directories:
+
+```sh
+python3 scripts/stdlib.py export --revision HEAD --metadata packaging/stdlib/submission.json --output build/stdlib-0.2.0
+python3 scripts/stdlib.py check --revision HEAD --metadata packaging/stdlib/submission.json --output build/stdlib-0.2.0
+python3 -u scripts/stdlib_integration.py --revision HEAD --metadata packaging/stdlib/submission.json --output build/stdlib-integration-0.2.0
+python3 scripts/stdlib_patch.py --revision HEAD --metadata packaging/stdlib/submission.json --upstream /path/to/plantuml-stdlib --output build/stdlib-submission-0.2.0
+```
+
+These commands read committed inputs, so commit the metadata and intended sources before running them. Replace `HEAD` with the recorded full candidate SHA when reproducing accepted evidence. The historical `v0.1.0` tag remains unchanged; `0.2.0` does not claim a 1.0 stability milestone.
 
 ## Actual candidate-JAR integration
 
@@ -65,6 +78,6 @@ python3 scripts/stdlib_patch.py --revision HEAD --upstream /path/to/plantuml-std
 
 It writes `contribution.patch` and adjacent review metadata/evidence under the selected output directory. Generated manifests and review evidence remain outside `stdlib/dfd/`; encoded SPM resources are not contribution files. The patch is a local review artifact and is not applied to, pushed to, or submitted upstream by this command. Inspect both the contribution files and the root README addition, and check that the patch applies to its recorded upstream base before requesting any later submission authorization.
 
-Default metadata remains preview-only and requires review. Once a future version is explicitly approved, commit its metadata JSON and pass the same `--metadata` choice to export/check and patch preparation. A metadata change requires a fresh manifest and validation evidence for that committed revision; do not hand-edit the generated patch to bypass exporter checks.
+Default metadata remains preview-only and requires review. The proposed 0.2.0 candidate uses committed `packaging/stdlib/submission.json`; pass that same `--metadata` choice to export/check, integration, and patch preparation. A metadata change requires a fresh manifest and validation evidence for that committed revision; do not hand-edit the generated patch to bypass exporter checks.
 
 Track three distinct statuses: a passing local candidate proves packaging and rendering; upstream acceptance requires an upstream review/merge; shipping requires identifying an official PlantUML release that actually contains the resources. Record these events and their revisions independently. None follows automatically from generating the patch, a version string, or a successful candidate build.

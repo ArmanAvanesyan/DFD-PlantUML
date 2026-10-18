@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 — candidate (publication pending)
 
 - Consolidate the official Level 0–1 library around the published macro signatures, with matching local dependencies and commit-pinned remote dependencies.
 - Repair optional titles and IDs, text escaping, customization setters, and structural validation. Validation remains opt-in.
@@ -12,9 +12,9 @@
 - Organize compatibility cases into named positive and negative fixtures with explicit diagnostics; check documentation links in both the repository and extracted distribution.
 - Add a deterministic, committed-revision stdlib preview export with source hashes and an explicit payload allowlist.
 - Build an actual candidate PlantUML JAR with the proposed DFD namespace; check offline bundled/local parity, native SVG/PNG output, and the official JAR's missing-namespace negative control.
-- Prepare unversioned release notes and a local-only contribution patch workflow; publication and upstream submission remain separate decisions.
+- Prepare proposed 0.2.0 release notes, committed candidate metadata, and a local-only contribution patch workflow; publication and upstream submission remain separate decisions.
 
-No version is assigned to these changes yet. Release numbering and publication are separate manual decisions after the candidate passes the release gate.
+Version 0.2.0 is proposed for the compatible functional consolidation of Level 0–1. This is an undated candidate entry, not a published release or a 1.0 stability claim. Publication remains a separate manual decision after the candidate passes the release gate.
 
 ## Historical `v0.1.0`
 

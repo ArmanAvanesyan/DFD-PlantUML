@@ -97,8 +97,9 @@ def prepare(repo, revision, upstream, output, metadata=None):
         'The patch passed `git apply --check` against the clean pinned upstream checkout. '
         'It contains only the root catalog edit and seven generated DFD files. '
         'The manifest is outside the contribution. No fork, push, PR, tag, or release was created.\n\n'
-        'Default metadata is unreleased and requires review before submission. '
-        'An explicit committed metadata selection also requires maintainer acceptance; '
+        f'Selected metadata: `{manifest["export_manifest"]["metadata"]["version"]}` '
+        f'({manifest["export_manifest"]["metadata"]["mode"]}). '
+        'This metadata selection requires maintainer acceptance before submission; '
         'it is not proof of publication. Review generated source, metadata, examples, '
         'DOT/SVG requirements and matching candidate validation evidence before any submission.\n')
     return manifest
